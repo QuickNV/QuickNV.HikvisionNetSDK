@@ -103,20 +103,7 @@ namespace Hikvision.NetSDK.Api.Service
             IpChannels = ipChannels;
         }
 
-        //public DateTime GetTime()
-        //{
-        //    NET_DVR_TIME m_struTimeCfg = default;
-        //    uint dwReturn = 0;
-        //    int nSize = Marshal.SizeOf(m_struTimeCfg);
-        //    IntPtr ptrTimeCfg = Marshal.AllocHGlobal(nSize);
-        //    Marshal.StructureToPtr(m_struTimeCfg, ptrTimeCfg, false);
-        //    Invoke(NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_TIMECFG, 1, ptrTimeCfg, (uint)nSize, ref dwReturn));
-        //    m_struTimeCfg = (NET_DVR_TIME)Marshal.PtrToStructure(ptrTimeCfg, typeof(NET_DVR_TIME));
-        //    Marshal.FreeHGlobal(ptrTimeCfg);
-        //    return m_struTimeCfg.ToDateTime();
-        //}
-
-        public string GetChannelName(HvChannel channel)
+        public void RefreshChannelName(HvChannel channel)
         {
             NET_DVR_PICCFG_V30 config = default;
             var ptrSize = Marshal.SizeOf(config);
@@ -127,7 +114,6 @@ namespace Hikvision.NetSDK.Api.Service
                 Invoke(NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_PICCFG_V30, channel.Id, ptr, (uint)ptrSize, ref ret));
                 config = Marshal.PtrToStructure<NET_DVR_PICCFG_V30>(ptr);
                 channel.Name = session.Encoding.GetString(config.sChanName).Trim('\0');
-                return channel.Name;
             }
             catch
             {
@@ -139,12 +125,12 @@ namespace Hikvision.NetSDK.Api.Service
             }
         }
 
-        public void GetChannelsName()
+        public void RefreshChannelsName()
         {
             foreach (var channel in AnalogChannels)
-                GetChannelName(channel);
+                RefreshChannelName(channel);
             foreach (var channel in IpChannels)
-                GetChannelName(channel);
+                RefreshChannelName(channel);
         }
     }
 }

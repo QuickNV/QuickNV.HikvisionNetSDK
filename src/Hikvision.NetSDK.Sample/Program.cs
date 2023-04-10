@@ -21,7 +21,7 @@ try
     Console.WriteLine("网络配置: " + JsonConvert.SerializeObject(session.ConfigService.GetNetworkConfig(), Formatting.Indented));
     Console.WriteLine("硬盘配置: " + JsonConvert.SerializeObject(session.ConfigService.GetHdConfig(), Formatting.Indented));
     Console.WriteLine("正在读取通道名称...");
-    session.ChannelService.GetChannelsName();
+    session.ChannelService.RefreshChannelsName();
     Console.WriteLine("模拟通道：" + string.Join(",", session.ChannelService.AnalogChannels.Select(t => $"通道{t.Id}_{t.Name}")));
     Console.WriteLine("IP通道：" + string.Join(",", session.ChannelService.IpChannels.Select(t => $"通道{t.Id}_{t.Name}")));
 
