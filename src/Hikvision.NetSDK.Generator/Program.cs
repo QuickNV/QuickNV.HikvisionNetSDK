@@ -144,19 +144,24 @@ namespace Hikvision.NetSDK
     {
         private static bool IsWindows = Environment.OSVersion.Platform == PlatformID.Win32NT;
 
-        public static T Invoke<T>(Func<T> func)
+        public static int Invoke(int result)
         {
-            T result = func.Invoke();
-            switch (result)
+            if (result < 0)
             {
-                case int val when val < 0:
-                case bool def when !def:
-                    {
-                        uint lastErrorCode = NET_DVR_GetLastError();
-                        throw new HikvisionException(lastErrorCode);
-                    }
-                default: return result;
+                uint lastErrorCode = NET_DVR_GetLastError();
+                throw new HikvisionException(lastErrorCode);
             }
+            return result;
+        }
+
+        public static bool Invoke(bool result)
+        {
+            if (!result)
+            {
+                uint lastErrorCode = NET_DVR_GetLastError();
+                throw new HikvisionException(lastErrorCode);
+            }
+            return result;
         }
 ");
 

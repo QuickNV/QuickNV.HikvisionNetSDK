@@ -1,21 +1,37 @@
-﻿using static Hikvision.NetSDK.Defines;
-using static Hikvision.NetSDK.Methods;
+﻿using Hikvision.NetSDK.Api;
+using Newtonsoft.Json;
+using System.Text;
 
 var host = "127.0.0.1";
 var port = 8000;
 var user = "admin";
 var password = "123456";
+var encoding = CodePagesEncodingProvider.Instance.GetEncoding("gb2312");
 
 try
 {
-    Console.WriteLine("正在初始化...");
-    Invoke(() => NET_DVR_Init());
+    HvSession.Init();
     Console.WriteLine("初始化成功！");
-    NET_DVR_DEVICEINFO_V30 deviceInfo = default;
     //登录
     Console.WriteLine("正在登录...");
-    Invoke(() => NET_DVR_Login_V30(host, port, user, password, ref deviceInfo));
+    var session = HvSession.Login(host, port, user, password, encoding);
     Console.WriteLine("登录成功！");
+    Console.WriteLine("设备时间: " + session.ConfigService.GetTime());
+    Console.WriteLine("设备配置: " + JsonConvert.SerializeObject(session.ConfigService.GetDeviceConfig(), Formatting.Indented));
+    Console.WriteLine("网络配置: " + JsonConvert.SerializeObject(session.ConfigService.GetNetworkConfig(), Formatting.Indented));
+    Console.WriteLine("硬盘配置: " + JsonConvert.SerializeObject(session.ConfigService.GetHdConfig(), Formatting.Indented));
+    Console.WriteLine("正在读取通道名称...");
+    session.ChannelService.GetChannelsName();
+    Console.WriteLine("模拟通道：" + string.Join(",", session.ChannelService.AnalogChannels.Select(t => $"通道{t.Id}_{t.Name}")));
+    Console.WriteLine("IP通道：" + string.Join(",", session.ChannelService.IpChannels.Select(t => $"通道{t.Id}_{t.Name}")));
+
+    //退出登录
+    session.Logout();
+    Console.WriteLine("退出登录完成");
+
+    //清理
+    HvSession.Cleanup();
+    Console.WriteLine("清理完成");
 }
 catch (Exception ex)
 {

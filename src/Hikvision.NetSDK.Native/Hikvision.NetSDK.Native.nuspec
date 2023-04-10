@@ -8,7 +8,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <iconUrl>https://www.hikvision.com/favicon.ico</iconUrl>
 	<projectUrl>https://github.com/aaasoft/Hikvision.NetSDK</projectUrl>
-    <description>设备网络SDK是基于设备私有网络通信协议开发的，为海康威视各类硬件产品服务的配套模块</description>
+    <description>Native binaries for Hikvision.NetSDK</description>
     <copyright>Public Domain</copyright>
     <tags>Hikvision,HCNetSDK</tags>
     <dependencies>

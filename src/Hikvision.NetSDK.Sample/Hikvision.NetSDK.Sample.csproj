@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hikvision.NetSDK\Hikvision.NetSDK.csproj" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hikvision.NetSDK.Api\Hikvision.NetSDK.Api.csproj" />
   </ItemGroup>
 
 </Project>

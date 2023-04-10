@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
@@ -9,18 +9,18 @@
 		<RepositoryType>git</RepositoryType>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Description>Hikvision NetSDK</Description>
-		<Version>6.1.947.1</Version>
+		<Version>6.1.9.47</Version>
 		<PackageIcon>logo.png</PackageIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Include="..\..\logo.png">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
+		<None Include="..\..\logo.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Hikvision.NetSDK.Native" Version="6.1.9.47" />
+	  <ProjectReference Include="..\Hikvision.NetSDK\Hikvision.NetSDK.csproj" />
 	</ItemGroup>
 </Project>
