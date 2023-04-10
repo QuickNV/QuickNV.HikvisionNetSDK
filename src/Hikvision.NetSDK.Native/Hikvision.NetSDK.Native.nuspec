@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
+  <metadata>
+    <id>Hikvision.NetSDK.Native</id>
+    <version>6.1.9.47</version>
+    <authors>Hikvision</authors>
+    <owners>Hikvision</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <iconUrl>https://www.hikvision.com/favicon.ico</iconUrl>
+	<projectUrl>https://github.com/aaasoft/Hikvision.NetSDK</projectUrl>
+    <description>设备网络SDK是基于设备私有网络通信协议开发的，为海康威视各类硬件产品服务的配套模块</description>
+    <copyright>Public Domain</copyright>
+    <tags>Hikvision,HCNetSDK</tags>
+    <dependencies>
+      <group targetFramework=".NETStandard1.0" />
+    </dependencies>
+  </metadata>
+</package>
