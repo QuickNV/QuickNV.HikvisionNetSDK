@@ -24,7 +24,30 @@ try
     session.ChannelService.RefreshChannelsName();
     Console.WriteLine("模拟通道：" + string.Join(",", session.ChannelService.AnalogChannels.Select(t => $"通道{t.Id}_{t.Name}")));
     Console.WriteLine("IP通道：" + string.Join(",", session.ChannelService.IpChannels.Select(t => $"通道{t.Id}_{t.Name}")));
-
+    //如果存在IP通道
+    if (session.ChannelService.IpChannels.Count > 0)
+    {
+        Console.WriteLine("开始下载...");
+        var channel = session.ChannelService.IpChannels.First();
+        var stopTime = DateTime.Now;
+        var startTime = stopTime.AddMinutes(-1);
+        var localFileName = $"{channel.Name}_{startTime.ToString("yyyyMMddHHmmss")}_{stopTime.ToString("yyyyMMddHHmmss")}.mp4";
+        var fileHandle = session.VideoFileService.StartDownloadFile(33, startTime, stopTime, localFileName);
+        while (true)
+        {
+            Thread.Sleep(1000);
+            var progress = session.VideoFileService.GetDownloadPosition(fileHandle);
+            if (progress < 0 || progress > 100)
+                throw new Exception("Download error.Progress: " + progress);
+            Console.CursorLeft = 0;
+            Console.Write($"进度：{progress}%");
+            if (progress == 100)
+                break;
+        }
+        Console.WriteLine();
+        session.VideoFileService.StopDownloadFile(fileHandle);
+        Console.WriteLine("下载完成。文件：" + localFileName);
+    }
     //退出登录
     session.Logout();
     Console.WriteLine("退出登录完成");
