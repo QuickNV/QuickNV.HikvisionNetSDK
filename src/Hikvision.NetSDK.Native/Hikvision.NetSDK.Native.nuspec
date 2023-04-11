@@ -6,7 +6,7 @@
     <authors>Hikvision</authors>
     <owners>Hikvision</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <iconUrl>https://www.hikvision.com/favicon.ico</iconUrl>
+    <icon>logo.png</icon>
 	<projectUrl>https://github.com/aaasoft/Hikvision.NetSDK</projectUrl>
     <description>Native binaries for Hikvision.NetSDK</description>
     <copyright>Public Domain</copyright>
