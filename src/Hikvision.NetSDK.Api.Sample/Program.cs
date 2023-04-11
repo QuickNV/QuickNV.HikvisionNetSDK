@@ -32,7 +32,7 @@ try
         var stopTime = DateTime.Now;
         var startTime = stopTime.AddMinutes(-1);
         var localFileName = $"{channel.Name}_{startTime.ToString("yyyyMMddHHmmss")}_{stopTime.ToString("yyyyMMddHHmmss")}.mp4";
-        var fileHandle = session.VideoFileService.StartDownloadFile(33, startTime, stopTime, localFileName);
+        var fileHandle = session.VideoFileService.StartDownloadFile(channel.Id, startTime, stopTime, localFileName);
         while (true)
         {
             Thread.Sleep(1000);
