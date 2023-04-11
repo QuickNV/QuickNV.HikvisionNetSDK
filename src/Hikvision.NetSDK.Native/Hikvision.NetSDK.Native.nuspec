@@ -2,15 +2,15 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
   <metadata>
     <id>Hikvision.NetSDK.Native</id>
-    <version>6.1.9.47</version>
+    <version>1.61.947</version>
     <authors>Hikvision</authors>
     <owners>Hikvision</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <icon>logo.png</icon>
 	<projectUrl>https://github.com/aaasoft/Hikvision.NetSDK</projectUrl>
-    <description>Native binaries for Hikvision.NetSDK</description>
+    <description>Native binaries(v6.1.9.47) for Hikvision.NetSDK.Include win-x64,win-x86,linux-x64,linux-x86.</description>
     <copyright>Public Domain</copyright>
-    <tags>Hikvision,HCNetSDK</tags>
+    <tags>Hikvision,NetSDK</tags>
     <dependencies>
       <group targetFramework=".NETStandard1.0" />
     </dependencies>

@@ -4,13 +4,14 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Authors>aaasoft</Authors>
 		<PackageProjectUrl>https://github.com/aaasoft/Hikvision.NetSDK</PackageProjectUrl>
-		<PackageTags>Hikvision, SDK, ip camera, photo, video</PackageTags>
+		<PackageTags>Hikvision, SDK</PackageTags>
 		<RepositoryUrl>https://github.com/aaasoft/Hikvision.NetSDK.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Description>Raw Hikvision NetSDK</Description>
-		<Version>6.1.947.0</Version>
+		<Description>Hikvision NetSDK原始API</Description>
+		<Version>1.61.947</Version>
 		<PackageIcon>logo.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -21,6 +22,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Hikvision.NetSDK.Native" Version="6.1.9.47" />
+	  <PackageReference Include="Hikvision.NetSDK.Native" Version="1.61.947" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 </Project>

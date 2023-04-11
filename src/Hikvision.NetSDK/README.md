@@ -1,4 +1,20 @@
-﻿using static Hikvision.NetSDK.Defines;
+﻿# Hikvision.NetSDK
+* Avaliable as [nuget](https://www.nuget.org/packages/Hikvision.NetSDK/) 
+
+* [![NuGet Downloads](https://img.shields.io/nuget/dt/Hikvision.NetSDK.svg)](https://www.nuget.org/packages/Hikvision.NetSDK/)
+
+* Hikvision NetSDK.
+
+说明
+```
+SDK定义类：Hikvision.NetSDK.Defines
+SDK方法类：Hikvision.NetSDK.Methods
+SDK错误枚举：Hikvision.NetSDK.Errors
+```
+
+示例
+```
+using static Hikvision.NetSDK.Defines;
 using static Hikvision.NetSDK.Methods;
 
 var host = "127.0.0.1";
@@ -26,3 +42,4 @@ catch (Exception ex)
 {
     Console.WriteLine(ex.ToString());
 }
+```
