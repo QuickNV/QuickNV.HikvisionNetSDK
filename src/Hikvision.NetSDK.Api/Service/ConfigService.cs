@@ -173,5 +173,13 @@ namespace Hikvision.NetSDK.Api.Service
                 Marshal.FreeHGlobal(ptrDeviceCfg);
             }
         }
+
+        public int GetRtspPort()
+        {
+            NET_DVR_RTSPCFG rtspConfig = default;
+            var ptrSize = Marshal.SizeOf(rtspConfig);
+            NET_DVR_GetRtspConfig(session.UserId, 0, ref rtspConfig, (uint)ptrSize);
+            return rtspConfig.wPort;
+        }
     }
 }
