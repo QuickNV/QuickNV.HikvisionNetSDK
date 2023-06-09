@@ -1,17 +1,65 @@
 ﻿using Hikvision.NetSDK.Api.Service;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Text;
 using static Hikvision.NetSDK.Defines;
 using static Hikvision.NetSDK.Methods;
-using static System.Collections.Specialized.BitVector32;
 
 namespace Hikvision.NetSDK.Api
 {
     public class HvSession : IDisposable
     {
+        private static SdkService _SdkService;
+        public static SdkService SdkService
+        {
+            get
+            {
+                if (_SdkService == null)
+                {
+                    _SdkService = new SdkService();
+                }
+                return _SdkService;
+            }
+        }
+
         private static Dictionary<int, HvSession> sessionDict = new Dictionary<int, HvSession>();
+        public static void Init()
+        {
+            Invoke(NET_DVR_Init());
+            Invoke(NET_DVR_SetExceptionCallBack_V30(0, IntPtr.Zero, ExceptionCallBack, IntPtr.Zero));
+        }
+        private static void ExceptionCallBack(uint dwType, int lUserID, int lHandle, IntPtr pUser)
+        {
+            HvSession session = null;
+            lock (sessionDict)
+                if (!sessionDict.TryGetValue(lUserID, out session))
+                    return;
+            session.OnException(dwType, lHandle, pUser);
+        }
+
+        public static HvSession Login(string host, int port, string username, string password, Encoding encoding)
+        {
+            NET_DVR_DEVICEINFO_V30 deviceInfo = default;
+            var userId = Invoke(NET_DVR_Login_V30(host, port, username, password, ref deviceInfo));
+            var session = new HvSession(userId, encoding, deviceInfo);
+            session.Host = host;
+            session.Port = port;
+            session.UserName = username;
+            session.Password = password;
+            lock (sessionDict)
+                sessionDict[userId] = session;
+            return session;
+        }
+        public static HvSession Login(string host, int port, string username, string password)
+        {
+            return Login(host, port, username, password, Encoding.Default);
+        }
+        public static void Cleanup() => Invoke(NET_DVR_Cleanup());
+
+        public string Host { get; private set; }
+        public int Port { get; private set; }
+        public string UserName { get; private set; }
+        public string Password { get; private set; }
         public int UserId { get; private set; }
         public bool IsOnline { get; private set; } = true;
         public Encoding Encoding { get; }
@@ -21,15 +69,6 @@ namespace Hikvision.NetSDK.Api
         /// 断开连接事件
         /// </summary>
         public event EventHandler Disconnected;
-
-        private static void ExceptionCallBack(uint dwType, int lUserID, int lHandle, IntPtr pUser)
-        {
-            HvSession session = null;
-            lock (sessionDict)
-                if (!sessionDict.TryGetValue(lUserID, out session))
-                    return;
-            session.OnException(dwType, lHandle, pUser);
-        }
 
         private HvSession(int userId, Encoding encoding, NET_DVR_DEVICEINFO_V30 deviceInfo)
         {
@@ -49,32 +88,6 @@ namespace Hikvision.NetSDK.Api
             }
         }
 
-        public static void Init() => Invoke(NET_DVR_Init());
-        public static void SetExceptionCallBack() => Invoke(NET_DVR_SetExceptionCallBack_V30(0, IntPtr.Zero, ExceptionCallBack, IntPtr.Zero));
-
-        public static bool SetConnectTime(uint waitTimeMilliseconds, uint tryTimes)
-            => Invoke(NET_DVR_SetConnectTime(waitTimeMilliseconds, tryTimes)); // 2000 , 1
-        public static bool SetReconnect(uint interval, int enableRecon)
-            => Invoke(NET_DVR_SetReconnect(interval, enableRecon)); // 10000 , 1
-        public static bool SetupLogs(HvLogLevel logLevel, string logDirectory, bool autoDelete)
-            => Invoke(NET_DVR_SetLogToFile((int)logLevel, logDirectory, autoDelete));
-
-        public static HvSession Login(string host, int port, string username, string password, Encoding encoding)
-        {
-            NET_DVR_DEVICEINFO_V30 deviceInfo = default;
-            var userId = Invoke(NET_DVR_Login_V30(host, port, username, password, ref deviceInfo));
-            var session = new HvSession(userId, encoding, deviceInfo);
-            lock (sessionDict)
-                sessionDict[userId] = session;
-            return session;
-        }
-
-        public static HvSession Login(string host, int port, string username, string password)
-        {
-            return Login(host, port, username, password, Encoding.Default);
-        }
-
-        public static void Cleanup() => Invoke(NET_DVR_Cleanup());
         public void Logout()
         {
             if (!IsOnline)

@@ -9,27 +9,32 @@ namespace Hikvision.NetSDK.Api.Service
     public class ChannelService
     {
         private HvSession session;
-
+        private int rtspPort;
         public IReadOnlyCollection<HvChannel> AnalogChannels { get; private set; }
         public IReadOnlyCollection<HvIpChannel> IpChannels { get; private set; }
+        public IReadOnlyCollection<HvChannel> AllChannels { get; private set; }
 
         internal ChannelService(HvSession session, NET_DVR_DEVICEINFO_V30 deviceInfo)
         {
             this.session = session;
             RefreshChannelsInfo(deviceInfo);
+            rtspPort = session.ConfigService.GetRtspPort();
         }
 
         private void RefreshChannelsInfo(NET_DVR_DEVICEINFO_V30 deviceInfo)
         {
+            var allChannels = new List<HvChannel>();
+
             var dwAnalogChannelTotalNumber = deviceInfo.byChanNum;
             var analogChannels = new List<HvChannel>();
             for (var i = 0; i < dwAnalogChannelTotalNumber; i++)
             {
                 var id = i + deviceInfo.byStartChan;
-                analogChannels.Add(new HvChannel(id));
+                var channel = new HvChannel(id);
+                analogChannels.Add(channel);
+                allChannels.Add(channel);
             }
             AnalogChannels = analogChannels;
-
 
             var ipChannels = new List<HvIpChannel>();
             uint dwDigitalChannelTotalNumber = deviceInfo.byIPChanNum + 256 * (uint)deviceInfo.byHighDChanNum;
@@ -86,10 +91,13 @@ namespace Hikvision.NetSDK.Api.Service
                                 //List ip channels
                                 if (struChanInfo.byIPID == 0)
                                     continue;
-                                ipChannels.Add(
-                                    new HvIpChannel(
-                                        i + (int)struIpParaCfgV40.dwStartDChan,
-                                        struChanInfo.byEnable != 0));
+                                var channelId = i + (int)struIpParaCfgV40.dwStartDChan;
+                                var channel = new HvIpChannel(
+                                        channelId,
+                                        i + 1,
+                                        struChanInfo.byEnable != 0);
+                                ipChannels.Add(channel);
+                                allChannels.Add(channel);
                                 Marshal.FreeHGlobal(ptrChanInfo);
                                 break;
 
@@ -101,6 +109,7 @@ namespace Hikvision.NetSDK.Api.Service
                 Marshal.FreeHGlobal(ptrIpParaCfgV40);
             }
             IpChannels = ipChannels;
+            AllChannels = allChannels;
         }
 
         public void RefreshChannelName(HvChannel channel)
@@ -127,10 +136,28 @@ namespace Hikvision.NetSDK.Api.Service
 
         public void RefreshChannelsName()
         {
-            foreach (var channel in AnalogChannels)
+            foreach (var channel in AllChannels)
                 RefreshChannelName(channel);
-            foreach (var channel in IpChannels)
-                RefreshChannelName(channel);
+        }
+
+        public void PTZControl(int channelId, HvPTZCommand ptzCommand, bool isStop, uint speed)
+        {
+            uint dwStop = 0;
+            if (isStop)
+                dwStop = 1;
+            Invoke(NET_DVR_PTZControlWithSpeed_Other(session.UserId, channelId, (uint)ptzCommand, dwStop, speed));
+        }
+
+        public string GetRtspUrl(HvChannel channel, HvStreamType streamType)
+        {
+            UriBuilder uriBuilder = new UriBuilder();
+            uriBuilder.Scheme = "rtsp";
+            uriBuilder.Host = session.Host;
+            uriBuilder.Port = rtspPort;
+            uriBuilder.UserName = session.UserName;
+            uriBuilder.Password = session.Password;
+            uriBuilder.Path = $"/Streaming/Channels/{channel.RtspChannelId}0{(int)streamType}";
+            return uriBuilder.ToString();
         }
     }
 }

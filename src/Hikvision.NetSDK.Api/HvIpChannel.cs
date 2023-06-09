@@ -6,10 +6,13 @@ namespace Hikvision.NetSDK.Api
 {
     public class HvIpChannel : HvChannel
     {
+        private int rtspChannelId;
         public bool IsOnline { get; }
-        internal HvIpChannel(int id, bool isOnline) : base(id)
+        public override int RtspChannelId => rtspChannelId;
+        internal HvIpChannel(int id, int rtspChannelId, bool isOnline) : base(id)
         {
             IsOnline = isOnline;
+            this.rtspChannelId = rtspChannelId;
         }
     }
 }

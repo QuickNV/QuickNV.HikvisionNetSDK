@@ -8,6 +8,7 @@ namespace Hikvision.NetSDK.Api
     {
         public int Id { get; }
         public string Name { get; internal set; }
+        public virtual int RtspChannelId => Id;
 
         internal HvChannel(int id)
         {
