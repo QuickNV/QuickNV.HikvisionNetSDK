@@ -23,7 +23,7 @@ namespace Hikvision.NetSDK.Api.Service
             {
                 Marshal.StructureToPtr(m_struTimeCfg, ptrTimeCfg, false);
                 Invoke(NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_TIMECFG, 1, ptrTimeCfg, (uint)nSize, ref dwReturn));
-                m_struTimeCfg = (NET_DVR_TIME)Marshal.PtrToStructure(ptrTimeCfg, typeof(NET_DVR_TIME));
+                m_struTimeCfg = Marshal.PtrToStructure<NET_DVR_TIME>(ptrTimeCfg);
                 return m_struTimeCfg.ToDateTime();
             }
             catch
@@ -67,7 +67,7 @@ namespace Hikvision.NetSDK.Api.Service
                 Marshal.StructureToPtr(m_struNetCfg, ptrNetCfg, false);
 
                 Invoke(NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_NETCFG_V30, -1, ptrNetCfg, (uint)nSize, ref dwReturn));
-                m_struNetCfg = (NET_DVR_NETCFG_V30)Marshal.PtrToStructure(ptrNetCfg, typeof(NET_DVR_NETCFG_V30));
+                m_struNetCfg = Marshal.PtrToStructure<NET_DVR_NETCFG_V30>(ptrNetCfg);
 
                 HvNetworkConfig networkConfig = new HvNetworkConfig
                 {
@@ -110,7 +110,7 @@ namespace Hikvision.NetSDK.Api.Service
 
                 Invoke(NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_DEVICECFG_V40, -1, ptrDeviceCfg, (uint)nSize, ref dwReturn));
 
-                m_struDeviceCfg = (NET_DVR_DEVICECFG_V40)Marshal.PtrToStructure(ptrDeviceCfg, typeof(NET_DVR_DEVICECFG_V40));
+                m_struDeviceCfg = Marshal.PtrToStructure<NET_DVR_DEVICECFG_V40>(ptrDeviceCfg);
 
                 uint iVer1 = (m_struDeviceCfg.dwSoftwareVersion >> 24) & 0xFF;
                 uint iVer2 = (m_struDeviceCfg.dwSoftwareVersion >> 16) & 0xFF;
@@ -161,7 +161,7 @@ namespace Hikvision.NetSDK.Api.Service
                     (uint)sizeOfConfig,
                     ref returned));
 
-                hdConfig = (NET_DVR_HDCFG)Marshal.PtrToStructure(ptrDeviceCfg, typeof(NET_DVR_HDCFG));
+                hdConfig = Marshal.PtrToStructure<NET_DVR_HDCFG>(ptrDeviceCfg);
                 return new HvHdConfig(hdConfig.struHDInfo[0]);
             }
             catch

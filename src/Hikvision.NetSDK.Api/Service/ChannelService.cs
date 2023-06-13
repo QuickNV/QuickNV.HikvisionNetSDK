@@ -60,9 +60,7 @@ namespace Hikvision.NetSDK.Api.Service
                 if (ipChannelsConfig)
                 {
                     // succ
-                    struIpParaCfgV40 = (NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(
-                        ptrIpParaCfgV40,
-                        typeof(NET_DVR_IPPARACFG_V40));
+                    struIpParaCfgV40 = Marshal.PtrToStructure<NET_DVR_IPPARACFG_V40>(ptrIpParaCfgV40);
 
                     byte byStreamType;
                     uint iDChanNum = 64;
@@ -85,9 +83,7 @@ namespace Hikvision.NetSDK.Api.Service
                                 dwSize = Marshal.SizeOf(unionGetStream);
                                 IntPtr ptrChanInfo = Marshal.AllocHGlobal(dwSize);
                                 Marshal.StructureToPtr(unionGetStream, ptrChanInfo, false);
-                                var struChanInfo = (NET_DVR_IPCHANINFO)Marshal.PtrToStructure(
-                                    ptrChanInfo,
-                                    typeof(NET_DVR_IPCHANINFO));
+                                var struChanInfo = Marshal.PtrToStructure<NET_DVR_IPCHANINFO>(ptrChanInfo);
                                 //List ip channels
                                 if (struChanInfo.byIPID == 0)
                                     continue;
