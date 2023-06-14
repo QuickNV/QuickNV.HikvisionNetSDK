@@ -22,21 +22,11 @@ namespace Hikvision.NetSDK.Api
             }
         }
 
-        private static Dictionary<int, HvSession> sessionDict = new Dictionary<int, HvSession>();
         public static void Init()
         {
             Invoke(NET_DVR_Init());
-            Invoke(NET_DVR_SetExceptionCallBack_V30(0, IntPtr.Zero, ExceptionCallBack, IntPtr.Zero));
         }
-        private static void ExceptionCallBack(uint dwType, int lUserID, int lHandle, IntPtr pUser)
-        {
-            HvSession session = null;
-            lock (sessionDict)
-                if (!sessionDict.TryGetValue(lUserID, out session))
-                    return;
-            session.OnException(dwType, lHandle, pUser);
-        }
-
+        
         public static HvSession Login(string host, int port, string username, string password, Encoding encoding)
         {
             NET_DVR_DEVICEINFO_V30 deviceInfo = default;
@@ -46,8 +36,6 @@ namespace Hikvision.NetSDK.Api
             session.Port = port;
             session.UserName = username;
             session.Password = password;
-            lock (sessionDict)
-                sessionDict[userId] = session;
             return session;
         }
         public static HvSession Login(string host, int port, string username, string password)
@@ -65,11 +53,6 @@ namespace Hikvision.NetSDK.Api
         public Encoding Encoding { get; }
         private NET_DVR_DEVICEINFO_V30 deviceInfo;
 
-        /// <summary>
-        /// 断开连接事件
-        /// </summary>
-        public event EventHandler Disconnected;
-
         private HvSession(int userId, Encoding encoding, NET_DVR_DEVICEINFO_V30 deviceInfo)
         {
             UserId = userId;
@@ -77,27 +60,11 @@ namespace Hikvision.NetSDK.Api
             this.deviceInfo = deviceInfo;
         }
 
-        private void OnException(uint dwType, int lHandle, IntPtr pUser)
-        {
-            switch (dwType)
-            {
-                case EXCEPTION_EXCHANGE:
-                    Logout();
-                    Disconnected?.Invoke(this, EventArgs.Empty);
-                    break;
-            }
-        }
-
         public void Logout()
         {
             if (!IsOnline)
                 return;
             IsOnline = false;
-            lock (sessionDict)
-            {
-                if (sessionDict.ContainsKey(UserId))
-                    sessionDict.Remove(UserId);
-            }
             Invoke(NET_DVR_Logout_V30(UserId));
         }
 
