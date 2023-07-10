@@ -174,6 +174,38 @@ namespace Hikvision.NetSDK.Api.Service
             }
         }
 
+        public HvHdConfig[] GetHdConfigs()
+        {
+            NET_DVR_HDCFG hdConfig = default;
+            uint returned = 0;
+            int sizeOfConfig = Marshal.SizeOf(hdConfig);
+            IntPtr ptrDeviceCfg = Marshal.AllocHGlobal(sizeOfConfig);
+            try
+            {
+                Marshal.StructureToPtr(hdConfig, ptrDeviceCfg, false);
+                Invoke(NET_DVR_GetDVRConfig(
+                    session.UserId,
+                    NET_DVR_GET_HDCFG,
+                    -1,
+                    ptrDeviceCfg,
+                    (uint)sizeOfConfig,
+                    ref returned));
+
+                hdConfig = Marshal.PtrToStructure<NET_DVR_HDCFG>(ptrDeviceCfg);
+
+                var disks = hdConfig.struHDInfo.Take((int)hdConfig.dwHDCount).Select(x => new HvHdConfig(x)).ToArray();
+                return disks;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(ptrDeviceCfg);
+            }
+        }
+
         public int GetRtspPort()
         {
             NET_DVR_RTSPCFG rtspConfig = default;
