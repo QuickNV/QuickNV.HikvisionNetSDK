@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hikvision.NetSDK.Api.Utils;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using static Hikvision.NetSDK.Defines;
@@ -118,7 +119,7 @@ namespace Hikvision.NetSDK.Api.Service
                 uint ret = 0;
                 Invoke(NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_PICCFG_V30, channel.Id, ptr, (uint)ptrSize, ref ret));
                 config = Marshal.PtrToStructure<NET_DVR_PICCFG_V30>(ptr);
-                channel.Name = session.Encoding.GetString(config.sChanName).Trim('\0');
+                channel.Name = StringUtils.ByteArray2String(config.sChanName, session.Encoding);
             }
             catch
             {

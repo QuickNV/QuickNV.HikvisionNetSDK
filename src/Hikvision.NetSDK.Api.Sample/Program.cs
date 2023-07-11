@@ -19,7 +19,7 @@ try
     Console.WriteLine("设备时间: " + session.ConfigService.GetTime());
     Console.WriteLine("设备配置: " + JsonConvert.SerializeObject(session.ConfigService.GetDeviceConfig(), Formatting.Indented));
     Console.WriteLine("网络配置: " + JsonConvert.SerializeObject(session.ConfigService.GetNetworkConfig(), Formatting.Indented));
-    Console.WriteLine("硬盘配置: " + JsonConvert.SerializeObject(session.ConfigService.GetHdConfig(), Formatting.Indented));
+    Console.WriteLine("硬盘配置: " + JsonConvert.SerializeObject(session.ConfigService.GetHdConfigs(), Formatting.Indented));
     Console.WriteLine("正在读取通道名称...");
     session.ChannelService.RefreshChannelsName();
     Console.WriteLine("模拟通道：" + string.Join(",", session.ChannelService.AnalogChannels.Select(t => $"通道{t.Id}_{t.Name}")));

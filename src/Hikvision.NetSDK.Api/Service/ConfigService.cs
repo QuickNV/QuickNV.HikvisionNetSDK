@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Hikvision.NetSDK.Api.Utils;
+using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using static Hikvision.NetSDK.Defines;
 using static Hikvision.NetSDK.Methods;
@@ -71,17 +73,17 @@ namespace Hikvision.NetSDK.Api.Service
 
                 HvNetworkConfig networkConfig = new HvNetworkConfig
                 {
-                    IPAddress = session.Encoding.GetString(m_struNetCfg.struEtherNet[0].struDVRIP.sIpV4).Trim('\0'),
-                    GateWay = session.Encoding.GetString(m_struNetCfg.struGatewayIpAddr.sIpV4).Trim('\0'),
-                    SubMask = session.Encoding.GetString(m_struNetCfg.struEtherNet[0].struDVRIPMask.sIpV4).Trim('\0'),
-                    Dns = session.Encoding.GetString(m_struNetCfg.struDnsServer1IpAddr.sIpV4).Trim('\0'),
-                    HostIP = session.Encoding.GetString(m_struNetCfg.struAlarmHostIpAddr.sIpV4).Trim('\0'),
+                    IPAddress = StringUtils.ByteArray2String(m_struNetCfg.struEtherNet[0].struDVRIP.sIpV4, session.Encoding),
+                    GateWay = StringUtils.ByteArray2String(m_struNetCfg.struGatewayIpAddr.sIpV4, session.Encoding),
+                    SubMask = StringUtils.ByteArray2String(m_struNetCfg.struEtherNet[0].struDVRIPMask.sIpV4, session.Encoding),
+                    Dns = StringUtils.ByteArray2String(m_struNetCfg.struDnsServer1IpAddr.sIpV4, session.Encoding),
+                    HostIP = StringUtils.ByteArray2String(m_struNetCfg.struAlarmHostIpAddr.sIpV4, session.Encoding),
                     AlarmHostIpPort = Convert.ToInt32(m_struNetCfg.wAlarmHostIpPort),
                     HttpPort = Convert.ToInt32(m_struNetCfg.wHttpPortNo),
                     DVRPort = Convert.ToInt32(m_struNetCfg.struEtherNet[0].wDVRPort),
                     DHCP = m_struNetCfg.byUseDhcp == 1,
                     PPPoE = m_struNetCfg.struPPPoE.dwPPPOE == 1,
-                    PPPoEName = session.Encoding.GetString(m_struNetCfg.struPPPoE.sPPPoEUser).Trim('\0'),
+                    PPPoEName = StringUtils.ByteArray2String(m_struNetCfg.struPPPoE.sPPPoEUser, session.Encoding),
                     PPPoEPassword = m_struNetCfg.struPPPoE.sPPPoEPassword
                 };
                 return networkConfig;
@@ -121,15 +123,15 @@ namespace Hikvision.NetSDK.Api.Service
 
                 var deviceConfig = new HvDeviceConfig
                 {
-                    Name = session.Encoding.GetString(m_struDeviceCfg.sDVRName).Trim('\0'),
-                    TypeName = session.Encoding.GetString(m_struDeviceCfg.byDevTypeName).Trim('\0'),
+                    Name = StringUtils.ByteArray2String(m_struDeviceCfg.sDVRName, session.Encoding),
+                    TypeName = StringUtils.ByteArray2String(m_struDeviceCfg.byDevTypeName, session.Encoding),
                     AnalogChannel = Convert.ToInt32(m_struDeviceCfg.byChanNum),
                     IPChannel = Convert.ToInt32(m_struDeviceCfg.byIPChanNum + 256 * m_struDeviceCfg.byHighIPChanNum),
                     ZeroChannel = Convert.ToInt32(m_struDeviceCfg.byZeroChanNum),
                     NetworkPort = Convert.ToInt32(m_struDeviceCfg.byNetworkPortNum),
                     AlarmInPort = Convert.ToInt32(m_struDeviceCfg.byAlarmInPortNum),
                     AlarmOutPort = Convert.ToInt32(m_struDeviceCfg.byAlarmOutPortNum),
-                    Serial = session.Encoding.GetString(m_struDeviceCfg.sSerialNumber).Trim('\0'),
+                    Serial = StringUtils.ByteArray2String(m_struDeviceCfg.sSerialNumber, session.Encoding),
                     Version = $"V{iVer1}.{iVer2}.{iVer3} Build {iVer4,0:D2}{iVer5,0:D2}{iVer6,0:D2}"
                 };
                 return deviceConfig;
@@ -144,36 +146,19 @@ namespace Hikvision.NetSDK.Api.Service
             }
         }
 
+        /// <summary>
+        /// 获取第一块硬盘信息
+        /// </summary>
+        /// <returns></returns>
         public HvHdConfig GetHdConfig()
         {
-            NET_DVR_HDCFG hdConfig = default;
-            uint returned = 0;
-            int sizeOfConfig = Marshal.SizeOf(hdConfig);
-            IntPtr ptrDeviceCfg = Marshal.AllocHGlobal(sizeOfConfig);
-            try
-            {
-                Marshal.StructureToPtr(hdConfig, ptrDeviceCfg, false);
-                Invoke(NET_DVR_GetDVRConfig(
-                    session.UserId,
-                    NET_DVR_GET_HDCFG,
-                    -1,
-                    ptrDeviceCfg,
-                    (uint)sizeOfConfig,
-                    ref returned));
-
-                hdConfig = Marshal.PtrToStructure<NET_DVR_HDCFG>(ptrDeviceCfg);
-                return new HvHdConfig(hdConfig.struHDInfo[0]);
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(ptrDeviceCfg);
-            }
+            return GetHdConfigs().FirstOrDefault();
         }
 
+        /// <summary>
+        /// 获取全部硬盘信息
+        /// </summary>
+        /// <returns></returns>
         public HvHdConfig[] GetHdConfigs()
         {
             NET_DVR_HDCFG hdConfig = default;
@@ -192,8 +177,10 @@ namespace Hikvision.NetSDK.Api.Service
                     ref returned));
 
                 hdConfig = Marshal.PtrToStructure<NET_DVR_HDCFG>(ptrDeviceCfg);
-
-                var disks = hdConfig.struHDInfo.Take((int)hdConfig.dwHDCount).Select(x => new HvHdConfig(x)).ToArray();
+                var disks = hdConfig.struHDInfo
+                    .Take((int)hdConfig.dwHDCount)
+                    .Select(x => new HvHdConfig(x))
+                    .ToArray();
                 return disks;
             }
             catch
@@ -206,6 +193,10 @@ namespace Hikvision.NetSDK.Api.Service
             }
         }
 
+        /// <summary>
+        /// 获取RTSP端口
+        /// </summary>
+        /// <returns></returns>
         public int GetRtspPort()
         {
             NET_DVR_RTSPCFG rtspConfig = default;
