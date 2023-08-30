@@ -1,2 +1,2 @@
-# Hikvision.NetSDK
-Hikvision NetSDK
+# QuickNV.HikvisionNetSDK
+QuickNV.HikvisionNetSDK
