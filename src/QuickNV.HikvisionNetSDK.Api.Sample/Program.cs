@@ -27,6 +27,15 @@ try
     //如果存在IP通道
     if (session.ChannelService.IpChannels.Count > 0)
     {
+        Console.WriteLine("开始查找录像文件...");
+        var channel = session.ChannelService.IpChannels.First();
+        var stopTime = DateTime.Now;
+        var startTime = stopTime.AddDays(-1);
+        var files = session.VideoFileService.FindFile(channel.Id, startTime, stopTime);
+        Console.WriteLine("录像文件：" + JsonConvert.SerializeObject(files, Formatting.Indented));
+        Console.WriteLine("查找录像文件完成.");
+
+        /*
         Console.WriteLine("开始下载...");
         var channel = session.ChannelService.IpChannels.First();
         var stopTime = DateTime.Now;
@@ -47,6 +56,7 @@ try
         Console.WriteLine();
         session.VideoFileService.StopDownloadFile(fileHandle);
         Console.WriteLine("下载完成。文件：" + localFileName);
+        */
     }
     //退出登录
     session.Logout();
