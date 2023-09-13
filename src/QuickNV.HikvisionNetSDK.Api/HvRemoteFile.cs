@@ -8,23 +8,31 @@ namespace QuickNV.HikvisionNetSDK.Api
     public class HvRemoteFile
     {
         public string Name { get; set; }
-        public DateTime Date { get; set; }
-        public int Duration { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime StopTime { get; set; }
         public long Size { get; set; }
 
         internal HvRemoteFile(NET_DVR_FIND_PICTURE_V50 findData)
         {
-            this.Name = Encoding.Default.GetString(findData.sFileName);
-            this.Date = findData.struTime.ToDateTime();
-            this.Size = findData.dwFileSize;
+            Name = Encoding.Default.GetString(findData.sFileName);
+            StartTime = findData.struTime.ToDateTime();
+            Size = findData.dwFileSize;
         }
 
         internal HvRemoteFile(NET_DVR_FINDDATA_V30 findData)
         {
-            this.Name = findData.sFileName;
-            this.Date = findData.struStartTime.ToDateTime();
-            this.Duration = (int)(findData.struStopTime.ToDateTime() - findData.struStartTime.ToDateTime()).TotalSeconds;
-            this.Size = findData.dwFileSize;
+            Name = findData.sFileName;
+            StartTime = findData.struStartTime.ToDateTime();
+            StopTime = findData.struStopTime.ToDateTime();
+            Size = findData.dwFileSize;
+        }
+
+        internal HvRemoteFile(NET_DVR_FINDDATA_V40 findData)
+        {
+            Name = findData.sFileName;
+            StartTime = findData.struStartTime.ToDateTime();
+            StopTime = findData.struStopTime.ToDateTime();
+            Size = findData.dwFileSize;
         }
 
         public HvRemoteFile()

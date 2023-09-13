@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickNV.HikvisionNetSDK.Sam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickNV.HikvisionNetSDK.Api", "QuickNV.HikvisionNetSDK.Api\QuickNV.HikvisionNetSDK.Api.csproj", "{BE66715C-57D0-46B4-9FC4-E220A09E55BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickNV.HikvisionNetSDK.Api.Sample", "QuickNV.HikvisionNetSDK.Api.Sample\QuickNV.HikvisionNetSDK.Api.Sample.csproj", "{7C7AAFC8-0528-4EE4-A681-9695631FB094}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickNV.HikvisionNetSDK.Api.Sample", "QuickNV.HikvisionNetSDK.Api.Sample\QuickNV.HikvisionNetSDK.Api.Sample.csproj", "{7C7AAFC8-0528-4EE4-A681-9695631FB094}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
