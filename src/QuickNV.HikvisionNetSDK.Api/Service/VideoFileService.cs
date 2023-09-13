@@ -12,6 +12,18 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
             this.session = session;
         }
 
+        public void FindFile(int channelId, DateTime startTime, DateTime stopTime)
+        {
+            NET_DVR_PLAYCOND playcond = new NET_DVR_PLAYCOND()
+            {
+                dwChannel = (uint)channelId,
+                struStartTime = startTime.ToNET_DVR_TIME(),
+                struStopTime = stopTime.ToNET_DVR_TIME(),
+            };
+            int downloadHandle = Invoke(NET_DVR_GetFileByTime_V40(session.UserId, string.Empty, ref playcond));
+
+        }
+
         public int StartDownloadFile(int channelId, DateTime startTime, DateTime stopTime, string destinationPath)
         {
             NET_DVR_PLAYCOND playcond = new NET_DVR_PLAYCOND()
