@@ -888,8 +888,11 @@ namespace QuickNV.HikvisionNetSDK
         public const int NET_DVR_CAPTURE_FACE_INFO = 2510;       //capture face information
 
         //预置点名称获取与设置
-        public const int NET_DVR_GET_PRESET_NAME = 3383;
-        public const int NET_DVR_SET_PRESET_NAME = 3382;
+        public const int NET_DVR_GET_PRESET_NAME = 3383;  //获取预置点名称
+        public const int NET_DVR_SET_PRESET_NAME = 3382;  //设置预置点名称
+
+        public const int NET_DVR_GET_PRESETCFG = 3224;  //获取预置点参数
+        public const int NET_DVR_GET_PRESET_NUM = 3226;  //获取预置点个数
 
         public const int NET_VCA_GET_RULECFG_V41 = 5011; //获取异常行为识别参数
         public const int NET_VCA_SET_RULECFG_V41 = 5012; //设置异常行为识别参数
@@ -6982,6 +6985,17 @@ namespace QuickNV.HikvisionNetSDK
             public ushort wZoomPos;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 58, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+        }
+
+        //预置位信息
+        [StructLayoutAttribute(LayoutKind.Sequential)]
+        public struct NET_DVR_PRESET_INFO
+        {
+            public uint dwSize; //结构体大小
+            public uint dwPresetNum;  //预置点个数
+            public uint dwGroupNum;  //组数
+            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 8, ArraySubType = UnmanagedType.I1)]
+            public byte[] byRes;  //保留
         }
 
         //球机位置信息
