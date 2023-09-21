@@ -187,18 +187,10 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
             IntPtr presetInfoPtr = Marshal.AllocHGlobal(size);
             Marshal.StructureToPtr(presetInfo, presetInfoPtr, false);
 
-            //var result = NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_PRESET_NUM, channelId, presetInfoPtr, (uint)size, ref bytesReturned);
-            var result = NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_PRESETCFG, channelId, presetInfoPtr, (uint)size, ref bytesReturned);
-            if (result)
-            {
-                presetInfo = Marshal.PtrToStructure<NET_DVR_PRESET_INFO>(presetInfoPtr);
-                Console.WriteLine(presetInfo.dwPresetNum);
-
-                return (int)presetInfo.dwPresetNum;
-            }
-
-            var iLastErr2 = NET_DVR_GetLastError();
-            return 0;
+            Invoke(NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_PRESETCFG, channelId, presetInfoPtr, (uint)size, ref bytesReturned));
+            presetInfo = Marshal.PtrToStructure<NET_DVR_PRESET_INFO>(presetInfoPtr);
+            Console.WriteLine(presetInfo.dwPresetNum);
+            return Convert.ToInt32(presetInfo.dwPresetNum);
         }
 
         /// <summary>
@@ -207,17 +199,9 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
         /// <param name="channelId">通道号</param>
         /// <param name="presetNumber">预置位编码</param>
         /// <returns></returns>
-        public bool SetPreset(int channelId, ushort presetNumber)
+        public void SetPreset(int channelId, ushort presetNumber)
         {
-            try
-            {
-                var success = Invoke(NET_DVR_PTZPreset_Other(session.UserId, channelId, SET_PRESET, presetNumber));
-                return success;
-            }
-            catch
-            {
-                return false;
-            }
+            Invoke(NET_DVR_PTZPreset_Other(session.UserId, channelId, SET_PRESET, presetNumber));
         }
 
         /// <summary>
@@ -226,8 +210,7 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
         /// <param name="channelId">通道号</param>
         /// <param name="presetNumber">预置位编码</param>
         /// <param name="presetName">预置位名称</param>
-        /// <returns></returns>
-        public bool ModifyPresetName(int channelId, ushort presetNumber, string presetName)
+        public void ModifyPresetName(int channelId, ushort presetNumber, string presetName)
         {
             if (string.IsNullOrWhiteSpace(presetName))
             {
@@ -248,12 +231,11 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
             Marshal.StructureToPtr(structure, ptr, false);
             try
             {
-                var success = Invoke(NET_DVR_SetDVRConfig(session.UserId, NET_DVR_SET_PRESET_NAME, channelId, ptr, (uint)nSize));
-                return success;
+                Invoke(NET_DVR_SetDVRConfig(session.UserId, NET_DVR_SET_PRESET_NAME, channelId, ptr, (uint)nSize));
             }
             catch
             {
-                return false;
+                throw;
             }
             finally
             {
@@ -268,9 +250,10 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
         /// <param name="presetNumber">预置位编码</param>
         /// <param name="presetName">预置位名称</param>
         /// <returns></returns>
-        public bool SetPresetWithName(int channelId, ushort presetNumber, string presetName)
+        public void SetPresetWithName(int channelId, ushort presetNumber, string presetName)
         {
-            return SetPreset(channelId, presetNumber) && ModifyPresetName(channelId, presetNumber, presetName);
+            SetPreset(channelId, presetNumber);
+            ModifyPresetName(channelId, presetNumber, presetName);
         }
 
         /// <summary>
@@ -278,18 +261,9 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
         /// </summary>
         /// <param name="channelId">通道号</param>
         /// <param name="presetNumber">预置位编码</param>
-        /// <returns></returns>
-        public bool GotoPreset(int channelId, ushort presetNumber)
+        public void GotoPreset(int channelId, ushort presetNumber)
         {
-            try
-            {
-                var success = Invoke(NET_DVR_PTZPreset_Other(session.UserId, channelId, GOTO_PRESET, presetNumber));
-                return success;
-            }
-            catch
-            {
-                return false;
-            }
+            Invoke(NET_DVR_PTZPreset_Other(session.UserId, channelId, GOTO_PRESET, presetNumber));
         }
 
         /// <summary>
@@ -297,18 +271,9 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
         /// </summary>
         /// <param name="channelId">通道号</param>
         /// <param name="presetNumber">预置位编码</param>
-        /// <returns></returns>
-        public bool RemovePreset(int channelId, ushort presetNumber)
+        public void RemovePreset(int channelId, ushort presetNumber)
         {
-            try
-            {
-                var success = Invoke(NET_DVR_PTZPreset_Other(session.UserId, channelId, CLE_PRESET, presetNumber));
-                return success;
-            }
-            catch
-            {
-                return false;
-            }
+            Invoke(NET_DVR_PTZPreset_Other(session.UserId, channelId, CLE_PRESET, presetNumber));
         }
 
         /// <summary>
@@ -341,7 +306,13 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
                 }
 
                 //获取参数成功
-                if (NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_PRESET_NAME, channelId, ptrPreSetCfg, (uint)nOutBufSize, ref bytesReturned))
+
+                if (Invoke(NET_DVR_GetDVRConfig(
+                    session.UserId,
+                    NET_DVR_GET_PRESET_NAME,
+                    channelId, ptrPreSetCfg,
+                    (uint)nOutBufSize,
+                    ref bytesReturned)))
                 {
                     for (i = 0; i < presetCount; i++)
                     {
@@ -360,12 +331,6 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
                         }
                     }
                 }
-                else
-                {
-                    var iLastErr = NET_DVR_GetLastError();
-                    var str = "NET_DVR_GetDVRConfig failed, error code= " + iLastErr;
-                    Console.WriteLine(str);
-                }
             }
             catch
             {
@@ -375,7 +340,6 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
             {
                 Marshal.FreeHGlobal(ptrPreSetCfg);
             }
-
             return containOnlyValidPreset ? presets.Where(x => x.IsSet).ToArray() : presets;
         }
 
@@ -402,7 +366,7 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
 
                 return new HvPtzPosition(panPos, tiltPos, zoomPos);
             }
-            catch (Exception e)
+            catch
             {
                 throw;
             }
@@ -419,55 +383,52 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
         /// <returns></returns>
         public async Task WaitUntilStopMovingAsync(int channelId)
         {
-            await Task.Run(async () =>
+            uint bytesReturned = 0;
+            NET_DVR_PTZPOS structure = new NET_DVR_PTZPOS();
+            int nSize = Marshal.SizeOf(structure);
+            IntPtr ptrPicCfg = Marshal.AllocHGlobal(nSize);
+            Marshal.StructureToPtr(structure, ptrPicCfg, false);
+
+            try
             {
-                uint bytesReturned = 0;
-                NET_DVR_PTZPOS structure = new NET_DVR_PTZPOS();
-                int nSize = Marshal.SizeOf(structure);
-                IntPtr ptrPicCfg = Marshal.AllocHGlobal(nSize);
-                Marshal.StructureToPtr(structure, ptrPicCfg, false);
+                bool result = NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_PTZPOS, channelId, ptrPicCfg, (uint)nSize, ref bytesReturned);
+                structure = (NET_DVR_PTZPOS)Marshal.PtrToStructure(ptrPicCfg, typeof(NET_DVR_PTZPOS));
+                var panPos = structure.wPanPos;
+                var tiltPos = structure.wTiltPos;
+                var zoomPos = structure.wZoomPos;
 
-                try
+                bool isMoving = true;
+                while (isMoving)
                 {
-                    bool result = NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_PTZPOS, channelId, ptrPicCfg, (uint)nSize, ref bytesReturned);
-                    structure = (NET_DVR_PTZPOS)Marshal.PtrToStructure(ptrPicCfg, typeof(NET_DVR_PTZPOS));
-                    var panPos = structure.wPanPos;
-                    var tiltPos = structure.wTiltPos;
-                    var zoomPos = structure.wZoomPos;
+                    await Task.Delay(100);
 
-                    bool isMoving = true;
-                    while (isMoving)
+                    result = NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_PTZPOS, channelId, ptrPicCfg, (uint)nSize, ref bytesReturned);
+                    if (result)
                     {
-                        await Task.Delay(50);
-
-                        result = NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_PTZPOS, channelId, ptrPicCfg, (uint)nSize, ref bytesReturned);
-                        if (result)
+                        structure = (NET_DVR_PTZPOS)Marshal.PtrToStructure(ptrPicCfg, typeof(NET_DVR_PTZPOS));
+                        //只要坐标没变就代表没动
+                        if (structure.wPanPos == panPos && structure.wTiltPos == tiltPos && structure.wZoomPos == zoomPos)
                         {
-                            structure = (NET_DVR_PTZPOS)Marshal.PtrToStructure(ptrPicCfg, typeof(NET_DVR_PTZPOS));
-                            //只要坐标没变就代表没动
-                            if (structure.wPanPos == panPos && structure.wTiltPos == tiltPos && structure.wZoomPos == zoomPos)
-                            {
-                                isMoving = false;
-                            }
-                            else
-                            {
-                                //设置当前位置为最新位置
-                                panPos = structure.wPanPos;
-                                tiltPos = structure.wTiltPos;
-                                zoomPos = structure.wZoomPos;
-                            }
+                            isMoving = false;
+                        }
+                        else
+                        {
+                            //设置当前位置为最新位置
+                            panPos = structure.wPanPos;
+                            tiltPos = structure.wTiltPos;
+                            zoomPos = structure.wZoomPos;
                         }
                     }
                 }
-                catch (Exception e)
-                {
-                    throw;
-                }
-                finally
-                {
-                    Marshal.FreeHGlobal(ptrPicCfg);
-                }
-            });
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(ptrPicCfg);
+            }
         }
 
         /// <summary>
