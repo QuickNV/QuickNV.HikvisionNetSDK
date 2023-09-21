@@ -1,7 +1,10 @@
 ﻿using QuickNV.HikvisionNetSDK.Api.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 using static QuickNV.HikvisionNetSDK.Defines;
 using static QuickNV.HikvisionNetSDK.Methods;
 
@@ -137,6 +140,13 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
                 RefreshChannelName(channel);
         }
 
+        /// <summary>
+        /// 云台控制
+        /// </summary>
+        /// <param name="channelId">通道号</param>
+        /// <param name="ptzCommand">云台控制命令</param>
+        /// <param name="isStop">云台停止动作或开始动作</param>
+        /// <param name="speed">云台控制的速度，用户按不同解码器的速度控制值设置。取值范围[1,160]</param>
         public void PTZControl(int channelId, HvPTZCommand ptzCommand, bool isStop, uint speed)
         {
             uint dwStop = 0;
@@ -145,6 +155,12 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
             Invoke(NET_DVR_PTZControlWithSpeed_Other(session.UserId, channelId, (uint)ptzCommand, dwStop, speed));
         }
 
+        /// <summary>
+        /// 获取通道的RTSP地址
+        /// </summary>
+        /// <param name="channel">通道</param>
+        /// <param name="streamType">视频流类型</param>
+        /// <returns></returns>
         public string GetRtspUrl(HvChannel channel, HvStreamType streamType)
         {
             UriBuilder uriBuilder = new UriBuilder();
@@ -155,6 +171,315 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
             uriBuilder.Password = session.Password;
             uriBuilder.Path = $"/Streaming/Channels/{channel.RtspChannelId}0{(int)streamType}";
             return uriBuilder.ToString();
+        }
+
+        /// <summary>
+        /// 获取预置位数量
+        /// </summary>
+        /// <param name="channelId">通道号</param>
+        /// <returns></returns>
+        public int GetPresetCount(int channelId)
+        {
+            uint bytesReturned = 0;
+
+            NET_DVR_PRESET_INFO presetInfo = new NET_DVR_PRESET_INFO();
+            int size = Marshal.SizeOf(typeof(NET_DVR_PRESET_INFO));
+            IntPtr presetInfoPtr = Marshal.AllocHGlobal(size);
+            Marshal.StructureToPtr(presetInfo, presetInfoPtr, false);
+
+            //var result = NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_PRESET_NUM, channelId, presetInfoPtr, (uint)size, ref bytesReturned);
+            var result = NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_PRESETCFG, channelId, presetInfoPtr, (uint)size, ref bytesReturned);
+            if (result)
+            {
+                presetInfo = Marshal.PtrToStructure<NET_DVR_PRESET_INFO>(presetInfoPtr);
+                Console.WriteLine(presetInfo.dwPresetNum);
+
+                return (int)presetInfo.dwPresetNum;
+            }
+
+            var iLastErr2 = NET_DVR_GetLastError();
+            return 0;
+        }
+
+        /// <summary>
+        /// 设置当前位置为特定预置位
+        /// </summary>
+        /// <param name="channelId">通道号</param>
+        /// <param name="presetNumber">预置位编码</param>
+        /// <returns></returns>
+        public bool SetPreset(int channelId, ushort presetNumber)
+        {
+            try
+            {
+                var success = Invoke(NET_DVR_PTZPreset_Other(session.UserId, channelId, SET_PRESET, presetNumber));
+                return success;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 修改特定预置位的名称
+        /// </summary>
+        /// <param name="channelId">通道号</param>
+        /// <param name="presetNumber">预置位编码</param>
+        /// <param name="presetName">预置位名称</param>
+        /// <returns></returns>
+        public bool ModifyPresetName(int channelId, ushort presetNumber, string presetName)
+        {
+            if (string.IsNullOrWhiteSpace(presetName))
+            {
+                presetName = $"预置点 {presetNumber}";
+            }
+
+            NET_DVR_PRESET_NAME structure = new NET_DVR_PRESET_NAME();
+            int nSize = Marshal.SizeOf(structure);
+            var bytes = new byte[32];
+            var src = session.Encoding.GetBytes(presetName);
+            var length = bytes.Length <= 32 ? src.Length : 32;
+            Array.Copy(src, bytes, length);
+            structure.dwSize = (uint)nSize;
+            structure.wPresetNum = presetNumber;
+            structure.byName = bytes;
+
+            IntPtr ptr = Marshal.AllocHGlobal(nSize);
+            Marshal.StructureToPtr(structure, ptr, false);
+            try
+            {
+                var success = Invoke(NET_DVR_SetDVRConfig(session.UserId, NET_DVR_SET_PRESET_NAME, channelId, ptr, (uint)nSize));
+                return success;
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(ptr);
+            }
+        }
+
+        /// <summary>
+        /// 设置当前位置为特定预置位编号及指定名称
+        /// </summary>
+        /// <param name="channelId">通道号</param>
+        /// <param name="presetNumber">预置位编码</param>
+        /// <param name="presetName">预置位名称</param>
+        /// <returns></returns>
+        public bool SetPresetWithName(int channelId, ushort presetNumber, string presetName)
+        {
+            return SetPreset(channelId, presetNumber) && ModifyPresetName(channelId, presetNumber, presetName);
+        }
+
+        /// <summary>
+        /// 转动到指定预置位
+        /// </summary>
+        /// <param name="channelId">通道号</param>
+        /// <param name="presetNumber">预置位编码</param>
+        /// <returns></returns>
+        public bool GotoPreset(int channelId, ushort presetNumber)
+        {
+            try
+            {
+                var success = Invoke(NET_DVR_PTZPreset_Other(session.UserId, channelId, GOTO_PRESET, presetNumber));
+                return success;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 清除指定预置位
+        /// </summary>
+        /// <param name="channelId">通道号</param>
+        /// <param name="presetNumber">预置位编码</param>
+        /// <returns></returns>
+        public bool RemovePreset(int channelId, ushort presetNumber)
+        {
+            try
+            {
+                var success = Invoke(NET_DVR_PTZPreset_Other(session.UserId, channelId, CLE_PRESET, presetNumber));
+                return success;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 获取NVR通道的预置位信息
+        /// </summary>
+        /// <param name="channelId">通道号</param>
+        /// <param name="presetCount">预置位数量，默认为255</param>
+        /// <param name="containOnlyValidPreset">是否仅反馈有效的预置位，默认是 true</param>
+        /// <returns></returns>
+        public HvPreset[] GetPresets(int channelId, int presetCount = 255, bool containOnlyValidPreset = true)
+        {
+            if (presetCount <= 0)
+            {
+                return Array.Empty<HvPreset>();
+            }
+
+            uint bytesReturned = 0;
+            var presets = new HvPreset[presetCount];
+            var presetCfg = new NET_DVR_PRESET_NAME[presetCount];
+            int nSize = Marshal.SizeOf(typeof(NET_DVR_PRESET_NAME));
+            int nOutBufSize = nSize * presetCount;
+            IntPtr ptrPreSetCfg = Marshal.AllocHGlobal(nOutBufSize);
+
+            try
+            {
+                int i;
+                for (i = 0; i < presetCount; i++)
+                {
+                    Marshal.StructureToPtr(presetCfg[i], ptrPreSetCfg, false);
+                }
+
+                //获取参数成功
+                if (NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_PRESET_NAME, channelId, ptrPreSetCfg, (uint)nOutBufSize, ref bytesReturned))
+                {
+                    for (i = 0; i < presetCount; i++)
+                    {
+                        // 在每次循环中，通过计算当前结构体的指针位置，将 ptrPreSetCfg 移动到正确的位置。然后使用 Marshal.PtrToStructure 方法将指针转换为结构体
+                        var ptrCurrent = IntPtr.Add(ptrPreSetCfg, i * nSize);
+                        presetCfg[i] = Marshal.PtrToStructure<NET_DVR_PRESET_NAME>(ptrCurrent);
+                        if (presetCfg[i].byName != null)
+                        {
+                            var presetName = StringUtils.ByteArray2String(presetCfg[i].byName, session.Encoding);
+                            var preset = new HvPreset(presetCfg[i].wPresetNum, presetName);
+                            preset.PanPos = ConvertPtzPos(presetCfg[i].wPanPos);
+                            preset.TiltPos = ConvertPtzPos(presetCfg[i].wTiltPos);
+                            preset.ZoomPos = ConvertPtzPos(presetCfg[i].wZoomPos);
+
+                            presets[i] = preset;
+                        }
+                    }
+                }
+                else
+                {
+                    var iLastErr = NET_DVR_GetLastError();
+                    var str = "NET_DVR_GetDVRConfig failed, error code= " + iLastErr;
+                    Console.WriteLine(str);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(ptrPreSetCfg);
+            }
+
+            return containOnlyValidPreset ? presets.Where(x => x.IsSet).ToArray() : presets;
+        }
+
+        /// <summary>
+        /// 获取球机Ptz参数
+        /// </summary>
+        /// <param name="channelId">通道号</param>
+        /// <returns></returns>
+        public HvPtzPosition GetPtzPosition(int channelId)
+        {
+            uint bytesReturned = 0;
+            NET_DVR_PTZPOS ptzPos = default;
+            int nSize = Marshal.SizeOf(ptzPos);
+            IntPtr ptrPicCfg = Marshal.AllocHGlobal(nSize);
+            Marshal.StructureToPtr(ptzPos, ptrPicCfg, false);
+            try
+            {
+                Invoke(NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_PTZPOS, channelId, ptrPicCfg, (uint)nSize, ref bytesReturned));
+                ptzPos = (NET_DVR_PTZPOS)Marshal.PtrToStructure(ptrPicCfg, typeof(NET_DVR_PTZPOS));
+
+                var panPos = ConvertPtzPos(ptzPos.wPanPos);
+                var tiltPos = ConvertPtzPos(ptzPos.wTiltPos);
+                var zoomPos = ConvertPtzPos(ptzPos.wZoomPos);
+
+                return new HvPtzPosition(panPos, tiltPos, zoomPos);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(ptrPicCfg);
+            }
+        }
+
+        /// <summary>
+        /// 等待摄像机停止转动
+        /// </summary>
+        /// <param name="channelId">通道号</param>
+        /// <returns></returns>
+        public async Task WaitUntilStopMovingAsync(int channelId)
+        {
+            await Task.Run(async () =>
+            {
+                uint bytesReturned = 0;
+                NET_DVR_PTZPOS structure = new NET_DVR_PTZPOS();
+                int nSize = Marshal.SizeOf(structure);
+                IntPtr ptrPicCfg = Marshal.AllocHGlobal(nSize);
+                Marshal.StructureToPtr(structure, ptrPicCfg, false);
+
+                try
+                {
+                    bool result = NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_PTZPOS, channelId, ptrPicCfg, (uint)nSize, ref bytesReturned);
+                    structure = (NET_DVR_PTZPOS)Marshal.PtrToStructure(ptrPicCfg, typeof(NET_DVR_PTZPOS));
+                    var panPos = structure.wPanPos;
+                    var tiltPos = structure.wTiltPos;
+                    var zoomPos = structure.wZoomPos;
+
+                    bool isMoving = true;
+                    while (isMoving)
+                    {
+                        await Task.Delay(50);
+
+                        result = NET_DVR_GetDVRConfig(session.UserId, NET_DVR_GET_PTZPOS, channelId, ptrPicCfg, (uint)nSize, ref bytesReturned);
+                        if (result)
+                        {
+                            structure = (NET_DVR_PTZPOS)Marshal.PtrToStructure(ptrPicCfg, typeof(NET_DVR_PTZPOS));
+                            //只要坐标没变就代表没动
+                            if (structure.wPanPos == panPos && structure.wTiltPos == tiltPos && structure.wZoomPos == zoomPos)
+                            {
+                                isMoving = false;
+                            }
+                            else
+                            {
+                                //设置当前位置为最新位置
+                                panPos = structure.wPanPos;
+                                tiltPos = structure.wTiltPos;
+                                zoomPos = structure.wZoomPos;
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+                finally
+                {
+                    Marshal.FreeHGlobal(ptrPicCfg);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 将PTZPOS参数转化为实际值
+        /// </summary>
+        /// <param name="ptzPos">参数</param>
+        /// <returns></returns>
+        private double ConvertPtzPos(ushort ptzPos)
+        {
+            var temp = (ptzPos / 4096) * 1000 + ((ptzPos % 4096) / 256) * 100 + ((ptzPos % 256) / 16) * 10 + (ptzPos % 16);
+            var result = temp / 10d % 360;
+            return result;
         }
     }
 }
