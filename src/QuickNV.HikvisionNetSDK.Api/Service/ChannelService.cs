@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Threading.Tasks;
 using static QuickNV.HikvisionNetSDK.Defines;
 using static QuickNV.HikvisionNetSDK.Methods;
@@ -156,12 +155,12 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
         }
 
         /// <summary>
-        /// 获取通道的RTSP地址
+        /// 获取通道实时视频流的RTSP地址
         /// </summary>
         /// <param name="channel">通道</param>
         /// <param name="streamType">视频流类型</param>
         /// <returns></returns>
-        public string GetRtspUrl(HvChannel channel, HvStreamType streamType)
+        public string GetLiveRtspUrl(HvChannel channel, HvStreamType streamType)
         {
             UriBuilder uriBuilder = new UriBuilder();
             uriBuilder.Scheme = "rtsp";
@@ -170,6 +169,31 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
             uriBuilder.UserName = session.UserName;
             uriBuilder.Password = session.Password;
             uriBuilder.Path = $"/Streaming/Channels/{channel.RtspChannelId}0{(int)streamType}";
+            return uriBuilder.ToString();
+        }
+        private string dateTime2Str(DateTime dateTime)
+        {
+            return $"{dateTime.ToString("yyyyMMdd")}t{dateTime.ToString("HHmmss")}z";
+        }
+
+        /// <summary>
+        /// 获取通道回放视频流的RTSP地址
+        /// </summary>
+        /// <param name="channel">通道</param>
+        /// <param name="streamType">视频流类型</param>
+        /// <param name="startTime">开始时间</param>
+        /// <param name="endTime">结束时间</param>
+        /// <returns></returns>
+        public string GetPlaybackRtspUrl(HvChannel channel, HvStreamType streamType, DateTime startTime, DateTime endTime)
+        {
+            UriBuilder uriBuilder = new UriBuilder();
+            uriBuilder.Scheme = "rtsp";
+            uriBuilder.Host = session.Host;
+            uriBuilder.Port = rtspPort;
+            uriBuilder.UserName = session.UserName;
+            uriBuilder.Password = session.Password;
+            uriBuilder.Path = $"/Streaming/tracks/{channel.RtspChannelId}0{(int)streamType}";
+            uriBuilder.Query = $"starttime={dateTime2Str(startTime)}&endtime={dateTime2Str(endTime)}";
             return uriBuilder.ToString();
         }
 
