@@ -2,13 +2,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
   <metadata>
     <id>QuickNV.HikvisionNetSDK.Native</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <authors>Hikvision</authors>
     <owners>Hikvision</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <icon>logo.png</icon>
 	<projectUrl>https://github.com/QuickNV/QuickNV.HikvisionNetSDK</projectUrl>
-    <description>Native Hikvision NetSDK binaries(v6.1.9.47).Include win-x64,win-x86,linux-x64,linux-x86.</description>
+    <description>Native Hikvision NetSDK binaries(v6.1.9.47).Include win-x64,linux-x64.</description>
     <copyright>Public Domain</copyright>
     <tags>Hikvision,NetSDK</tags>
     <dependencies>
