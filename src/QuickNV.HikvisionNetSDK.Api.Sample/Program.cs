@@ -26,7 +26,7 @@ try
     Console.WriteLine("IP通道：" + string.Join(",", session.ChannelService.IpChannels.Select(t => $"通道{t.Id}_{t.Name}")));
 
     //获取RTSP地址
-    var rtsp = session.ChannelService.GetRtspUrl(session.ChannelService.AllChannels.First(), HvStreamType.Main);
+    var rtsp = session.ChannelService.GetLiveRtspUrl(session.ChannelService.AllChannels.First(), HvStreamType.Main);
     //获取PTZ参数
     var ptzPosition = session.ChannelService.GetPtzPosition(session.ChannelService.AllChannels.First().Id);
 
