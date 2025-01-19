@@ -7,7 +7,6 @@
 		<PackageTags>Hikvision, SDK</PackageTags>
 		<RepositoryUrl>https://github.com/QuickNV/QuickNV.HikvisionNetSDK.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Description>Hikvision NetSDK二次开发API</Description>
 		<Version>1.0.4</Version>
 		<PackageIcon>logo.png</PackageIcon>
