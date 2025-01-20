@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
   <metadata>
     <id>QuickNV.HikvisionNetSDK.Native</id>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <authors>Hikvision</authors>
     <owners>Hikvision</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
