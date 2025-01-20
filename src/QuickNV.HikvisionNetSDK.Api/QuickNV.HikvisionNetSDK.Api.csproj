@@ -8,7 +8,7 @@
 		<RepositoryUrl>https://github.com/QuickNV/QuickNV.HikvisionNetSDK.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<Description>Hikvision NetSDK二次开发API</Description>
-		<Version>1.0.5</Version>
+		<Version>1.0.6</Version>
 		<PackageIcon>logo.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
