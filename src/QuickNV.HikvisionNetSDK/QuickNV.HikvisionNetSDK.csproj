@@ -21,7 +21,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="QuickNV.HikvisionNetSDK.Native" Version="1.0.2" />
+	  <PackageReference Include="QuickNV.HikvisionNetSDK.Native" Version="1.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
