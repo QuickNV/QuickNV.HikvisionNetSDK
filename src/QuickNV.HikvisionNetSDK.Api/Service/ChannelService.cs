@@ -160,7 +160,7 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
         /// <param name="channel">通道</param>
         /// <param name="streamType">视频流类型</param>
         /// <returns></returns>
-        public string GetLiveRtspUrl(HvChannel channel, HvStreamType streamType)
+        public string GetLiveRtspUrl(HvChannel channel, HvRtspPathFormat pathFormat, HvStreamType streamType)
         {
             UriBuilder uriBuilder = new UriBuilder();
             uriBuilder.Scheme = "rtsp";
@@ -168,9 +168,18 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
             uriBuilder.Port = rtspPort;
             uriBuilder.UserName = session.UserName;
             uriBuilder.Password = session.Password;
-            uriBuilder.Path = $"/Streaming/Channels/{channel.RtspChannelId}0{(int)streamType}";
+            switch (pathFormat)
+            {
+                case HvRtspPathFormat.AvStream:
+                    uriBuilder.Path = $"/h264/ch{channel.RtspChannelId}/{streamType.ToString().ToLower()}/av_stream";
+                    break;
+                case HvRtspPathFormat.Streaming:
+                    uriBuilder.Path = $"/Streaming/Channels/{channel.RtspChannelId}0{(int)streamType}";
+                    break;
+            }
             return uriBuilder.ToString();
         }
+
         private string dateTime2Str(DateTime dateTime)
         {
             return $"{dateTime.ToString("yyyyMMdd")}t{dateTime.ToString("HHmmss")}z";
