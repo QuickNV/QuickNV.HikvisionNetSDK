@@ -160,7 +160,19 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
         /// <param name="channel">通道</param>
         /// <param name="streamType">视频流类型</param>
         /// <returns></returns>
-        public string GetLiveRtspUrl(HvChannel channel, HvRtspPathFormat pathFormat, HvStreamType streamType)
+        public string GetLiveRtspUrl(HvChannel channel, HvStreamType streamType)
+        {
+            return GetLiveRtspUrl(channel,streamType, HvRtspPathFormat.Streaming);
+        }
+
+        /// <summary>
+        /// 获取通道实时视频流的RTSP地址
+        /// </summary>
+        /// <param name="channel">通道</param>
+        /// <param name="streamType">视频流类型</param>
+        /// <param name="pathFormat">路径格式</param>
+        /// <returns></returns>
+        public string GetLiveRtspUrl(HvChannel channel, HvStreamType streamType, HvRtspPathFormat pathFormat)
         {
             UriBuilder uriBuilder = new UriBuilder();
             uriBuilder.Scheme = "rtsp";
