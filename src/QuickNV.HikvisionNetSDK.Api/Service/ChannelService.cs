@@ -194,6 +194,13 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
 
         private string dateTime2Str(DateTime dateTime)
         {
+            switch (dateTime.Kind)
+            {
+                case DateTimeKind.Local:
+                case DateTimeKind.Unspecified:
+                    dateTime = dateTime.ToUniversalTime();
+                    break;
+            }
             return $"{dateTime.ToString("yyyyMMdd")}t{dateTime.ToString("HHmmss")}z";
         }
 
