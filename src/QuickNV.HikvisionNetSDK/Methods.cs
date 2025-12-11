@@ -30,13 +30,6 @@ namespace QuickNV.HikvisionNetSDK
             return result;
         }
 
-        public static int NET_DVR_SendWithRecvRemoteConfig(int lHandle, IntPtr lpInBuff, uint dwInBuffSize, IntPtr lpOutBuff, uint dwOutBuffSize, ref uint dwOutDataLen)
-        {
-            if (IsWindows)
-                return Methods_Win.NET_DVR_SendWithRecvRemoteConfig(lHandle, lpInBuff, dwInBuffSize, lpOutBuff, dwOutBuffSize, ref dwOutDataLen);
-            else
-                return Methods_Linux.NET_DVR_SendWithRecvRemoteConfig(lHandle, lpInBuff, dwInBuffSize, lpOutBuff, dwOutBuffSize, ref dwOutDataLen);
-        }
         public static int NET_DVR_SendWithRecvRemoteConfig(int lHandle, ref NET_DVR_FACE_RECORD lpInBuff, int dwInBuffSize, ref NET_DVR_FACE_STATUS lpOutBuff, int dwOutBuffSize, IntPtr dwOutDataLen)
         {
             if (IsWindows)
@@ -50,6 +43,13 @@ namespace QuickNV.HikvisionNetSDK
                 return Methods_Win.NET_DVR_SendWithRecvRemoteConfig(lHandle, ref lpInBuff, dwInBuffSize, ref lpOutBuff, dwOutBuffSize, dwOutDataLen);
             else
                 return Methods_Linux.NET_DVR_SendWithRecvRemoteConfig(lHandle, ref lpInBuff, dwInBuffSize, ref lpOutBuff, dwOutBuffSize, dwOutDataLen);
+        }
+        public static int NET_DVR_SendWithRecvRemoteConfig(int lHandle, IntPtr lpInBuff, uint dwInBuffSize, IntPtr lpOutBuff, uint dwOutBuffSize, ref uint dwOutDataLen)
+        {
+            if (IsWindows)
+                return Methods_Win.NET_DVR_SendWithRecvRemoteConfig(lHandle, lpInBuff, dwInBuffSize, lpOutBuff, dwOutBuffSize, ref dwOutDataLen);
+            else
+                return Methods_Linux.NET_DVR_SendWithRecvRemoteConfig(lHandle, lpInBuff, dwInBuffSize, lpOutBuff, dwOutBuffSize, ref dwOutDataLen);
         }
         public static bool NET_DVR_STDXMLConfig(int lUserID, IntPtr lpInputParam, IntPtr lpOutputParam)
         {
@@ -338,6 +338,18 @@ namespace QuickNV.HikvisionNetSDK
             else
                 return Methods_Linux.NET_SDK_RealPlay(iUserLogID, ref lpDVRClientInfo);
         }
+
+        /*********************************************************
+        Function:	NET_DVR_RealPlay_V30
+        Desc:		实时预览。
+        Input:	lUserID [in] NET_DVR_Login()或NET_DVR_Login_V30()的返回值 
+                lpClientInfo [in] 预览参数 
+                cbRealDataCallBack [in] 码流数据回调函数 
+                pUser [in] 用户数据 
+                bBlocked [in] 请求码流过程是否阻塞：0－否；1－是 
+        Output:	
+        Return:	1表示失败，其他值作为NET_DVR_StopRealPlay等函数的句柄参数
+        **********************************************************/
         public static int NET_DVR_RealPlay_V30(int iUserID, ref NET_DVR_CLIENTINFO lpClientInfo, REALDATACALLBACK fRealDataCallBack_V30, IntPtr pUser, UInt32 bBlocked)
         {
             if (IsWindows)
@@ -463,20 +475,6 @@ namespace QuickNV.HikvisionNetSDK
                 return Methods_Win.NET_DVR_CapturePictureBlock(lRealHandle, sPicFileName, dwTimeOut);
             else
                 return Methods_Linux.NET_DVR_CapturePictureBlock(lRealHandle, sPicFileName, dwTimeOut);
-        }
-        public static bool NET_DVR_MakeKeyFrame(Int32 lUserID, Int32 lChannel)//主码流
-        {
-            if (IsWindows)
-                return Methods_Win.NET_DVR_MakeKeyFrame(lUserID, lChannel);
-            else
-                return Methods_Linux.NET_DVR_MakeKeyFrame(lUserID, lChannel);
-        }
-        public static bool NET_DVR_MakeKeyFrameSub(Int32 lUserID, Int32 lChannel)//子码流
-        {
-            if (IsWindows)
-                return Methods_Win.NET_DVR_MakeKeyFrameSub(lUserID, lChannel);
-            else
-                return Methods_Linux.NET_DVR_MakeKeyFrameSub(lUserID, lChannel);
         }
         public static bool NET_DVR_GetPTZCtrl(Int32 lRealHandle)
         {
@@ -1402,6 +1400,7 @@ namespace QuickNV.HikvisionNetSDK
             else
                 return Methods_Linux.NET_DVR_GetPlayBackPlayerIndex(lPlayHandle);
         }
+        //人脸识别上传文件发送数据
         public static Int32 NET_DVR_UploadSend(int lUploadHandle, ref NET_DVR_SEND_PARAM_IN pstruSendParamIN, IntPtr lpOutBuffer)
         {
             if (IsWindows)
@@ -1409,6 +1408,7 @@ namespace QuickNV.HikvisionNetSDK
             else
                 return Methods_Linux.NET_DVR_UploadSend(lUploadHandle, ref pstruSendParamIN, lpOutBuffer);
         }
+        //人脸识别上传文件
         public static Int32 NET_DVR_UploadFile_V40(int lUserID, uint dwUploadType, IntPtr lpInBuffer, uint dwInBufferSize, string sFileName, IntPtr lpOutBuffer, uint dwOutBufferSize)
         {
             if (IsWindows)
@@ -1850,7 +1850,7 @@ namespace QuickNV.HikvisionNetSDK
             else
                 return Methods_Linux.NET_DVR_GetPicUploadProgress(lUploadHandle);
         }
-        public static bool NET_DVR_CloseUploadHandle(int lUploadHandle)  
+        public static bool NET_DVR_CloseUploadHandle(int lUploadHandle)
         {
             if (IsWindows)
                 return Methods_Win.NET_DVR_CloseUploadHandle(lUploadHandle);
@@ -1926,6 +1926,41 @@ namespace QuickNV.HikvisionNetSDK
                 return Methods_Win.NET_DVR_ShutDownDVR(lUserID);
             else
                 return Methods_Linux.NET_DVR_ShutDownDVR(lUserID);
+        }
+        public static bool NET_DVR_ControlGateway(int lUserID, int lGatewayIndex, int dwStaic)
+        {
+            if (IsWindows)
+                return Methods_Win.NET_DVR_ControlGateway(lUserID, lGatewayIndex, dwStaic);
+            else
+                return Methods_Linux.NET_DVR_ControlGateway(lUserID, lGatewayIndex, dwStaic);
+        }
+        public static int NET_DVR_StartRemoteConfig(
+            int lUserID,
+            uint dwCommand,
+            IntPtr lpInBuffer,
+            uint dwInBufferLen,
+            fRemoteConfigCallback cbStateCallback,
+            IntPtr pUserData
+        )
+        {
+            if (IsWindows)
+                return Methods_Win.NET_DVR_StartRemoteConfig(
+ lUserID, 
+ dwCommand, 
+ lpInBuffer, 
+ dwInBufferLen, 
+ cbStateCallback, 
+ pUserData
+);
+            else
+                return Methods_Linux.NET_DVR_StartRemoteConfig(
+ lUserID, 
+ dwCommand, 
+ lpInBuffer, 
+ dwInBufferLen, 
+ cbStateCallback, 
+ pUserData
+);
         }
         public static bool NET_DVR_GetDVRConfig(int lUserID, uint dwCommand, int lChannel, IntPtr lpOutBuffer, uint dwOutBufferSize, ref uint lpBytesReturned)
         {
@@ -2024,6 +2059,13 @@ namespace QuickNV.HikvisionNetSDK
                 return Methods_Win.NET_DVR_ClientSetVideoEffect(lRealHandle, dwBrightValue, dwContrastValue, dwSaturationValue, dwHueValue);
             else
                 return Methods_Linux.NET_DVR_ClientSetVideoEffect(lRealHandle, dwBrightValue, dwContrastValue, dwSaturationValue, dwHueValue);
+        }
+        public static int NET_DVR_FindNextLog_V50(int lLogHandle, ref NET_DVR_LOG_V50 lpLogData)
+        {
+            if (IsWindows)
+                return Methods_Win.NET_DVR_FindNextLog_V50(lLogHandle, ref lpLogData);
+            else
+                return Methods_Linux.NET_DVR_FindNextLog_V50(lLogHandle, ref lpLogData);
         }
         public static bool NET_DVR_ClientGetVideoEffect(int lRealHandle, ref uint pBrightValue, ref uint pContrastValue, ref uint pSaturationValue, ref uint pHueValue)
         {
@@ -2368,6 +2410,14 @@ namespace QuickNV.HikvisionNetSDK
             else
                 return Methods_Linux.NET_DVR_GetVCADrawMode(lUserID, lChannel, ref lpDrawMode);
         }
+
+        public static int NET_DVR_FindDVRLog_V50(int lUserID, ref NET_DVR_FIND_LOG_COND pFindCond)
+        {
+            if (IsWindows)
+                return Methods_Win.NET_DVR_FindDVRLog_V50(lUserID, ref pFindCond);
+            else
+                return Methods_Linux.NET_DVR_FindDVRLog_V50(lUserID, ref pFindCond);
+        }
         public static bool NET_DVR_SetVCADrawMode(int lUserID, int lChannel, ref NET_VCA_DRAW_MODE lpDrawMode)
         {
             if (IsWindows)
@@ -2410,7 +2460,7 @@ namespace QuickNV.HikvisionNetSDK
             else
                 return Methods_Linux.NET_DVR_GetParamSetMode(lUserID, ref dwParamSetMode);
         }
-        public static bool NET_DVR_InquestStartCDW_V30(int lUserID,  ref NET_DVR_INQUEST_ROOM lpInquestRoom, bool bNotBurn)
+        public static bool NET_DVR_InquestStartCDW_V30(int lUserID, ref NET_DVR_INQUEST_ROOM lpInquestRoom, bool bNotBurn)
         {
             if (IsWindows)
                 return Methods_Win.NET_DVR_InquestStartCDW_V30(lUserID, ref lpInquestRoom, bNotBurn);

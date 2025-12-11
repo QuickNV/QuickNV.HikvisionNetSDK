@@ -9,11 +9,11 @@ namespace QuickNV.HikvisionNetSDK
         public const string DllPath = "HCNetSDK.dll";
 
         [DllImport(DllPath)]
-        public static extern int NET_DVR_SendWithRecvRemoteConfig(int lHandle, IntPtr lpInBuff, uint dwInBuffSize, IntPtr lpOutBuff, uint dwOutBuffSize, ref uint dwOutDataLen);
-        [DllImport(DllPath)]
         public static extern int NET_DVR_SendWithRecvRemoteConfig(int lHandle, ref NET_DVR_FACE_RECORD lpInBuff, int dwInBuffSize, ref NET_DVR_FACE_STATUS lpOutBuff, int dwOutBuffSize, IntPtr dwOutDataLen);
         [DllImport(DllPath)]
         public static extern int NET_DVR_SendWithRecvRemoteConfig(int lHandle, ref NET_DVR_FINGERPRINT_RECORD lpInBuff, int dwInBuffSize, ref NET_DVR_FINGERPRINT_STATUS lpOutBuff, int dwOutBuffSize, IntPtr dwOutDataLen);
+        [DllImport(DllPath)]
+        public static extern int NET_DVR_SendWithRecvRemoteConfig(int lHandle, IntPtr lpInBuff, uint dwInBuffSize, IntPtr lpOutBuff, uint dwOutBuffSize, ref uint dwOutDataLen);
         [DllImport(DllPath)]
         public static extern bool NET_DVR_STDXMLConfig(int lUserID, IntPtr lpInputParam, IntPtr lpOutputParam);
         [DllImport(DllPath)]
@@ -146,8 +146,11 @@ namespace QuickNV.HikvisionNetSDK
         public static extern bool NET_DVR_CapturePictureBlock(Int32 lRealHandle, string sPicFileName, int dwTimeOut);
         [DllImport(DllPath)]
         public static extern bool NET_DVR_MakeKeyFrame(Int32 lUserID, Int32 lChannel);//主码流
+
         [DllImport(DllPath)]
         public static extern bool NET_DVR_MakeKeyFrameSub(Int32 lUserID, Int32 lChannel);//子码流
+
+        //云台控制相关接口
         [DllImport(DllPath)]
         public static extern bool NET_DVR_GetPTZCtrl(Int32 lRealHandle);
         [DllImport(DllPath)]
@@ -543,7 +546,7 @@ namespace QuickNV.HikvisionNetSDK
         [DllImport(DllPath)]
         public static extern int NET_DVR_GetPicUploadProgress(int lUploadHandle);
         [DllImport(DllPath)]
-        public static extern bool NET_DVR_CloseUploadHandle(int lUploadHandle);  
+        public static extern bool NET_DVR_CloseUploadHandle(int lUploadHandle);
         [DllImport(DllPath)]
         public static extern int NET_DVR_GetPicUploadState(int lUploadHandle);
         [DllImport(DllPath)]
@@ -564,6 +567,17 @@ namespace QuickNV.HikvisionNetSDK
         public static extern bool NET_DVR_RebootDVR(int lUserID);
         [DllImport(DllPath)]
         public static extern bool NET_DVR_ShutDownDVR(int lUserID);
+        [DllImport(DllPath)]
+        public static extern bool NET_DVR_ControlGateway(int lUserID, int lGatewayIndex, int dwStaic);
+        [DllImport(DllPath)]
+        public static extern int NET_DVR_StartRemoteConfig(
+            int lUserID,
+            uint dwCommand,
+            IntPtr lpInBuffer,
+            uint dwInBufferLen,
+            fRemoteConfigCallback cbStateCallback,
+            IntPtr pUserData
+        );
         [DllImport(DllPath)]
         public static extern bool NET_DVR_GetDVRConfig(int lUserID, uint dwCommand, int lChannel, IntPtr lpOutBuffer, uint dwOutBufferSize, ref uint lpBytesReturned);
         [DllImport(DllPath)]
@@ -592,6 +606,8 @@ namespace QuickNV.HikvisionNetSDK
         public static extern bool NET_DVR_GetUpnpNatState(int lUserID, ref NET_DVR_UPNP_NAT_STATE lpState);
         [DllImport(DllPath)]
         public static extern bool NET_DVR_ClientSetVideoEffect(int lRealHandle, uint dwBrightValue, uint dwContrastValue, uint dwSaturationValue, uint dwHueValue);
+        [DllImport(DllPath)]
+        public static extern int NET_DVR_FindNextLog_V50(int lLogHandle, ref NET_DVR_LOG_V50 lpLogData);
         [DllImport(DllPath)]
         public static extern bool NET_DVR_ClientGetVideoEffect(int lRealHandle, ref uint pBrightValue, ref uint pContrastValue, ref uint pSaturationValue, ref uint pHueValue);
         [DllImport(DllPath)]
@@ -691,6 +707,9 @@ namespace QuickNV.HikvisionNetSDK
         [DllImport(DllPath)]
         public static extern bool NET_DVR_GetVCADrawMode(int lUserID, int lChannel, ref NET_VCA_DRAW_MODE lpDrawMode);
         [DllImport(DllPath)]
+
+        public static extern int NET_DVR_FindDVRLog_V50(int lUserID, ref NET_DVR_FIND_LOG_COND pFindCond);
+        [DllImport(DllPath)]
         public static extern bool NET_DVR_SetVCADrawMode(int lUserID, int lChannel, ref NET_VCA_DRAW_MODE lpDrawMode);
         [DllImport(DllPath)]
         public static extern bool NET_DVR_SetLFTrackMode(int lUserID, int lChannel, ref NET_DVR_LF_TRACK_MODE lpTrackMode);
@@ -703,7 +722,7 @@ namespace QuickNV.HikvisionNetSDK
         [DllImport(DllPath)]
         public static extern bool NET_DVR_GetParamSetMode(int lUserID, ref uint dwParamSetMode);
         [DllImport(DllPath)]
-        public static extern bool NET_DVR_InquestStartCDW_V30(int lUserID,  ref NET_DVR_INQUEST_ROOM lpInquestRoom, bool bNotBurn);
+        public static extern bool NET_DVR_InquestStartCDW_V30(int lUserID, ref NET_DVR_INQUEST_ROOM lpInquestRoom, bool bNotBurn);
         [DllImport(DllPath)]
         public static extern int PostMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImport(DllPath)]

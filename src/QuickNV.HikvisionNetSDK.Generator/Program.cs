@@ -9,15 +9,15 @@ var sourceFileEncoding = CodePagesEncodingProvider.Instance.GetEncoding("gb2312"
 var sourceFile = "CHCNetSDK.cs";
 //方法开始前缀
 var methodStartLinePrefix = "[DllImport";
-//方法结束前缀
-var methodEndLinePrefix = "public static extern";
+//方法结束后缀
+var methodEndLineSuffix = ");";
 //错误开始内容
 var errorStartContent = "全局错误码 begin";
 //错误结束内容
 var errorEndContent = "全局错误码 end";
 
 //方法正则表达式
-var methodRegex = new Regex(@"public static (?<ReturnType>.*?) (?<MethodName>.*?)\((?<Parameters>.*?)\)");
+var methodRegex = new Regex(@"public static (?<ReturnType>.*?) (?<MethodName>.*?)\((?<Parameters>.*?)\)", RegexOptions.Singleline);
 //错误正则表达式
 var errorRegex = new Regex("public const int (?<Name>.*?) = (?<Value>.*?);//(?<Description>.*)");
 
@@ -55,10 +55,10 @@ for (var i = 0; i < lines.Length; i++)
         sbDefines.AppendLine(line);
 
     //如果是方法结束
-    if (lineTrimed.StartsWith(methodEndLinePrefix))
+    if (methodStartLineIndex >= 0 && lineTrimed.EndsWith(methodEndLineSuffix))
     {
+        methodList.Add(string.Join(Environment.NewLine, lines.Skip(methodStartLineIndex + 1).Take(i - methodStartLineIndex)));
         methodStartLineIndex = -1;
-        methodList.Add(line);
     }
 
     //如果是错误结束
