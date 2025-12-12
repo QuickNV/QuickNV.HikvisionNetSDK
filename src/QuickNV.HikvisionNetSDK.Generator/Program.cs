@@ -367,6 +367,12 @@ namespace Temp
                 {
                     // 获取成员注释并转换为标准文档注释
                     string memberComment = GetComment(fieldDecl);
+                    if (memberComment != null)
+                        memberComment = memberComment
+                            .Replace("<","&lt;")
+                            .Replace(">","&gt;")
+                            .Replace("&","&amp;");
+                    
                     string memberDocComment = ConvertToDocComment(memberComment);
                     if (!string.IsNullOrEmpty(memberDocComment))
                     {

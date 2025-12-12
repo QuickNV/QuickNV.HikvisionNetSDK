@@ -7120,7 +7120,7 @@ namespace QuickNV.HikvisionNetSDK
             public uint dwSize;
             public NET_DVR_STREAM_INFO struStreamInfo;
             /// <summary>
-            /// 码流类型，0-主码流，1-子码流，2-事件类型，3-码流3，……（自定义码流类型需通过GET /ISAPI/Streaming/channels/<ID>/customStream获取当前通道已经添加的所有自定义码流ID。自定义码流为6~10，其索引值就是6~10）
+            /// 码流类型，0-主码流，1-子码流，2-事件类型，3-码流3，……（自定义码流类型需通过GET /ISAPI/Streaming/channels/&amp;lt;ID&amp;gt;/customStream获取当前通道已经添加的所有自定义码流ID。自定义码流为6~10，其索引值就是6~10）
             /// </summary>
             public uint dwStreamType;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 32, ArraySubType = UnmanagedType.I1)]
@@ -7366,7 +7366,7 @@ namespace QuickNV.HikvisionNetSDK
         {
             public NET_DVR_SCHEDTIME struRecordTime;
             /// <summary>
-            /// 0:定时录像，1:移动侦测，2:报警录像，3:动测|报警，4:动测&报警, 5:命令触发, 6: 智能录像
+            /// 0:定时录像，1:移动侦测，2:报警录像，3:动测|报警，4:动测&amp;报警, 5:命令触发, 6: 智能录像
             /// </summary>
             public byte byRecordType;
             [MarshalAsAttribute(UnmanagedType.ByValTStr, SizeConst = 3)]
@@ -7385,7 +7385,7 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public ushort wAllDayRecord;
             /// <summary>
-            /// 录象类型 0:定时录像，1:移动侦测，2:报警录像，3:动测|报警，4:动测&报警 5:命令触发, 6: 智能录像
+            /// 录象类型 0:定时录像，1:移动侦测，2:报警录像，3:动测|报警，4:动测&amp;报警 5:命令触发, 6: 智能录像
             /// </summary>
             public byte byRecordType;
             public byte reservedData;
@@ -7400,7 +7400,7 @@ namespace QuickNV.HikvisionNetSDK
         {
             public NET_DVR_SCHEDTIME struRecordTime;
             /// <summary>
-            /// 录像类型，0:定时录像，1:移动侦测，2:报警录像，3:动测|报警，4:动测&报警 5:命令触发,
+            /// 录像类型，0:定时录像，1:移动侦测，2:报警录像，3:动测|报警，4:动测&amp;报警 5:命令触发,
             /// 6-智能报警录像，10-PIR报警，11-无线报警，12-呼救报警，13-全部事件,14-智能交通事件,
             /// 15-越界侦测,16-区域入侵,17-声音异常,18-场景变更侦测,
             /// 19-智能侦测(越界侦测|区域入侵|人脸侦测|声音异常|场景变更侦测),20－人脸侦测,21-POS录像,
@@ -7426,7 +7426,7 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte byAllDayRecord;
             /// <summary>
-            /// 录像类型，0:定时录像，1:移动侦测，2:报警录像，3:动测|报警，4:动测&报警 5:命令触发,
+            /// 录像类型，0:定时录像，1:移动侦测，2:报警录像，3:动测|报警，4:动测&amp;报警 5:命令触发,
             /// 6-智能报警录像，10-PIR报警，11-无线报警，12-呼救报警，13-全部事件,14-智能交通事件,
             /// 15-越界侦测,16-区域入侵,17-声音异常,18-场景变更侦测,
             /// 19-智能侦测(越界侦测|区域入侵|人脸侦测|声音异常|场景变更侦测),20－人脸侦测,21-POS录像,
@@ -9462,9 +9462,9 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public uint dwStorageType;
             /// <summary>
-            /// dwStorageType & 0x1 表示是否是普通录像专用存储盘
-            /// dwStorageType & 0x2  表示是否是抽帧录像专用存储盘
-            /// dwStorageType & 0x4 表示是否是图片录像专用存储盘
+            /// dwStorageType &amp; 0x1 表示是否是普通录像专用存储盘
+            /// dwStorageType &amp; 0x2  表示是否是抽帧录像专用存储盘
+            /// dwStorageType &amp; 0x4 表示是否是图片录像专用存储盘
             /// </summary>
             public uint dwPictureCapacity;
             /// <summary>
@@ -14779,24 +14779,24 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte bySupport;
             /// <summary>
-            /// bySupport & 0x1, 表示是否支持智能搜索
-            /// bySupport & 0x2, 表示是否支持备份
-            /// bySupport & 0x4, 表示是否支持压缩参数能力获取
-            /// bySupport & 0x8, 表示是否支持多网卡
-            /// bySupport & 0x10, 表示支持远程SADP
-            /// bySupport & 0x20, 表示支持Raid卡功能
-            /// bySupport & 0x40, 表示支持IPSAN 目录查找
-            /// bySupport & 0x80, 表示支持rtp over rtsp
+            /// bySupport &amp; 0x1, 表示是否支持智能搜索
+            /// bySupport &amp; 0x2, 表示是否支持备份
+            /// bySupport &amp; 0x4, 表示是否支持压缩参数能力获取
+            /// bySupport &amp; 0x8, 表示是否支持多网卡
+            /// bySupport &amp; 0x10, 表示支持远程SADP
+            /// bySupport &amp; 0x20, 表示支持Raid卡功能
+            /// bySupport &amp; 0x40, 表示支持IPSAN 目录查找
+            /// bySupport &amp; 0x80, 表示支持rtp over rtsp
             /// </summary>
             public byte bySupport1;
             /// <summary>
-            /// bySupport1 & 0x1, 表示是否支持snmp v30
-            /// bySupport1 & 0x2, 支持区分回放和下载
-            /// bySupport1 & 0x4, 是否支持布防优先级
-            /// bySupport1 & 0x8, 智能设备是否支持布防时间段扩展
-            /// bySupport1 & 0x10, 表示是否支持多磁盘数（超过33个）
-            /// bySupport1 & 0x20, 表示是否支持rtsp over http
-            /// bySupport1 & 0x80, 表示是否支持车牌新报警信息2012-9-28, 且还表示是否支持NET_DVR_IPPARACFG_V40结构体
+            /// bySupport1 &amp; 0x1, 表示是否支持snmp v30
+            /// bySupport1 &amp; 0x2, 支持区分回放和下载
+            /// bySupport1 &amp; 0x4, 是否支持布防优先级
+            /// bySupport1 &amp; 0x8, 智能设备是否支持布防时间段扩展
+            /// bySupport1 &amp; 0x10, 表示是否支持多磁盘数（超过33个）
+            /// bySupport1 &amp; 0x20, 表示是否支持rtsp over http
+            /// bySupport1 &amp; 0x80, 表示是否支持车牌新报警信息2012-9-28, 且还表示是否支持NET_DVR_IPPARACFG_V40结构体
             /// </summary>
             public byte bySupport2;
             /// <summary>
@@ -14808,12 +14808,12 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte bySupport3;
             /// <summary>
-            /// bySupport3 & 0x1, 表示是否多码流
-            /// bySupport3 & 0x4 表示支持按组配置， 具体包含 通道图像参数、报警输入参数、IP报警输入、输出接入参数、
+            /// bySupport3 &amp; 0x1, 表示是否多码流
+            /// bySupport3 &amp; 0x4 表示支持按组配置， 具体包含 通道图像参数、报警输入参数、IP报警输入、输出接入参数、
             /// 用户参数、设备工作状态、JPEG抓图、定时和时间抓图、硬盘盘组管理
-            /// bySupport3 & 0x8为1 表示支持使用TCP预览、UDP预览、多播预览中的"延时预览"字段来请求延时预览（后续都将使用这种方式请求延时预览）。而当bySupport3 & 0x8为0时，将使用 "私有延时预览"协议。
-            /// bySupport3 & 0x10 表示支持"获取报警主机主要状态（V40）"。
-            /// bySupport3 & 0x20 表示是否支持通过DDNS域名解析取流
+            /// bySupport3 &amp; 0x8为1 表示支持使用TCP预览、UDP预览、多播预览中的"延时预览"字段来请求延时预览（后续都将使用这种方式请求延时预览）。而当bySupport3 &amp; 0x8为0时，将使用 "私有延时预览"协议。
+            /// bySupport3 &amp; 0x10 表示支持"获取报警主机主要状态（V40）"。
+            /// bySupport3 &amp; 0x20 表示是否支持通过DDNS域名解析取流
             /// </summary>
             public byte byMultiStreamProto;
             /// <summary>
@@ -14835,8 +14835,8 @@ namespace QuickNV.HikvisionNetSDK
             public byte byLanguageType;
             /// <summary>
             /// byLanguageType 等于0 表示 老设备
-            /// byLanguageType & 0x1表示支持中文
-            /// byLanguageType & 0x2表示支持英文
+            /// byLanguageType &amp; 0x1表示支持中文
+            /// byLanguageType &amp; 0x2表示支持英文
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 9, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes2;
@@ -14879,8 +14879,8 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte bySupport;
             /// <summary>
-            /// bySupport & 0x1:  保留
-            /// bySupport & 0x2:  0-不支持变化上报 1-支持变化上报
+            /// bySupport &amp; 0x1:  保留
+            /// bySupport &amp; 0x2:  0-不支持变化上报 1-支持变化上报
             /// </summary>
             public byte byLoginMode;
             public int dwOEMCode;
@@ -15330,7 +15330,7 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte byFileType;
             /// <summary>
-            /// 3-报警|移动侦测 4-报警&移动侦测 5-命令触发 6-手动录像,7－震动报警，8-环境报警，9-智能报警，10-PIR报警，11-无线报警，12-呼救报警,14-智能交通事件
+            /// 3-报警|移动侦测 4-报警&amp;移动侦测 5-命令触发 6-手动录像,7－震动报警，8-环境报警，9-智能报警，10-PIR报警，11-无线报警，12-呼救报警,14-智能交通事件
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 2, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
@@ -15371,7 +15371,7 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte byFileType;
             /// <summary>
-            /// 3-报警|移动侦测 4-报警&移动侦测 5-命令触发 6-手动录像,7－震动报警，8-环境报警，9-智能报警，10-PIR报警，11-无线报警，12-呼救报警,14-智能交通事件
+            /// 3-报警|移动侦测 4-报警&amp;移动侦测 5-命令触发 6-手动录像,7－震动报警，8-环境报警，9-智能报警，10-PIR报警，11-无线报警，12-呼救报警,14-智能交通事件
             /// </summary>
             public byte byQuickSearch;
             public byte byRes;
@@ -15427,7 +15427,7 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public uint dwFileType;
             /// <summary>
-            /// 3-报警|移动侦测 4-报警&移动侦测 5-命令触发 6-手动录像
+            /// 3-报警|移动侦测 4-报警&amp;移动侦测 5-命令触发 6-手动录像
             /// </summary>
             public uint dwIsLocked;
             /// <summary>
@@ -15896,7 +15896,7 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte byControlType;
             /// <summary>
-            /// byControlType &1 是否启用抓拍功能
+            /// byControlType &amp;1 是否启用抓拍功能
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 3, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
@@ -15983,8 +15983,8 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte bySupport;
             /// <summary>
-            /// bySupport & 0x1，表示是否支持智能 2012-3-22
-            /// bySupport & 0x2，表示是否支持128路取流扩展2012-12-27
+            /// bySupport &amp; 0x1，表示是否支持智能 2012-3-22
+            /// bySupport &amp; 0x2，表示是否支持128路取流扩展2012-12-27
             /// </summary>
             public byte byFRecogChanNum;
             /// <summary>
@@ -16297,7 +16297,7 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte bySupport;
             /// <summary>
-            /// bySupport & 0x01 支持标定功能
+            /// bySupport &amp; 0x01 支持标定功能
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 9, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
@@ -16662,7 +16662,7 @@ namespace QuickNV.HikvisionNetSDK
         public struct NET_VCA_POLYGON
         {
             /// <summary>
-            /// DWORD->unsigned int
+            /// DWORD-&amp;gt;unsigned int
             /// </summary>
             public uint dwPointNum;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = VCA_MAX_POLYGON_POINT_NUM, ArraySubType = UnmanagedType.Struct)]
@@ -19647,7 +19647,7 @@ namespace QuickNV.HikvisionNetSDK
         public struct EVENT_STREAMID_RET
         {
             /// <summary>
-            /// 录像类型 0-定时录像 1-移动侦测 2-报警录像 3-报警|移动侦测 4-报警&移动侦测 5-命令触发 6-手动录像 7-震动报警 8-环境触发 9-智能报警 10-回传录像
+            /// 录像类型 0-定时录像 1-移动侦测 2-报警录像 3-报警|移动侦测 4-报警&amp;移动侦测 5-命令触发 6-手动录像 7-震动报警 8-环境触发 9-智能报警 10-回传录像
             /// </summary>
             public uint dwRecordType;
             /// <summary>
@@ -20509,8 +20509,8 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte byControlType;
             /// <summary>
-            /// byControlType &1 是否启用抓拍功能
-            /// byControlType &2 是否启用联动前端设备
+            /// byControlType &amp;1 是否启用抓拍功能
+            /// byControlType &amp;2 是否启用联动前端设备
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 83, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
@@ -21780,7 +21780,7 @@ namespace QuickNV.HikvisionNetSDK
         public struct NET_DVR_TPS_ADDINFO
         {
             /// <summary>
-            /// 车流量最后一辆车的经纬度位置信息(byLaneState=3且byQueueLen>0时才返回)
+            /// 车流量最后一辆车的经纬度位置信息(byLaneState=3且byQueueLen&amp;gt;0时才返回)
             /// </summary>
             public NET_DVR_LLPOS_PARAM struLLPos;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 1024, ArraySubType = UnmanagedType.I1)]
@@ -22204,7 +22204,7 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public ushort wCountry;
             /// <summary>
-            /// 区域索引值,0-保留，1-欧洲(Europe Region)，2-俄语区域(Russian Region)，3-欧洲&俄罗斯(EU&CIS) , 4-中东（Middle East），0xff-所有
+            /// 区域索引值,0-保留，1-欧洲(Europe Region)，2-俄语区域(Russian Region)，3-欧洲&amp;俄罗斯(EU&amp;CIS) , 4-中东（Middle East），0xff-所有
             /// </summary>
             public byte byRegion;
             /// <summary>
@@ -22526,7 +22526,7 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte byEnable;
             /// <summary>
-            /// 警戒事件类型， 0-异常人脸; 1-正常人脸;2-异常人脸&正常人脸;
+            /// 警戒事件类型， 0-异常人脸; 1-正常人脸;2-异常人脸&amp;正常人脸;
             /// </summary>
             public byte byEventType;
             /// <summary>
@@ -22623,7 +22623,7 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte byEnable;
             /// <summary>
-            /// 警戒事件类型， 0-异常人脸; 1-正常人脸;2-异常人脸&正常人脸;
+            /// 警戒事件类型， 0-异常人脸; 1-正常人脸;2-异常人脸&amp;正常人脸;
             /// </summary>
             public byte byEventType;
             /// <summary>
@@ -23307,7 +23307,7 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte byEntireBelieve;
             /// <summary>
-            /// 区域索引值 0-保留，1-欧洲(EU)，2-俄语区域(ER)，3-欧洲&俄罗斯(EU&CIS) ,4-中东(ME),0xff-所有
+            /// 区域索引值 0-保留，1-欧洲(EU)，2-俄语区域(ER)，3-欧洲&amp;俄罗斯(EU&amp;CIS) ,4-中东(ME),0xff-所有
             /// </summary>
             public byte byRegion;
             /// <summary>
@@ -24933,19 +24933,19 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte bySupport;
             /// <summary>
-            /// bySupport&0x1，表示是否支持扩展的字符叠加配置
-            /// bySupport&0x2，表示是否支持扩展的校时配置结构
-            /// bySupport&0x4, 表示是否支持多网卡(多网隔离)
-            /// bySupport&0x8, 表示是否支持网卡的bonding功能(网络容错)
-            /// bySupport&0x10, 表示是否支持语音对讲
+            /// bySupport&amp;0x1，表示是否支持扩展的字符叠加配置
+            /// bySupport&amp;0x2，表示是否支持扩展的校时配置结构
+            /// bySupport&amp;0x4, 表示是否支持多网卡(多网隔离)
+            /// bySupport&amp;0x8, 表示是否支持网卡的bonding功能(网络容错)
+            /// bySupport&amp;0x10, 表示是否支持语音对讲
             /// 2013-07-09 能力集返回
             /// </summary>
             public ushort wSupportMultiRadar;
             /// <summary>
-            /// wSupportMultiRadar&0x1，表示 卡口RS485雷达 支持车道关联雷达处理
-            /// wSupportMultiRadar&0x2，表示 卡口虚拟线圈 支持车道关联雷达处理
-            /// wSupportMultiRadar&0x4，表示 混行卡口 支持车道关联雷达处理
-            /// wSupportMultiRadar&0x8，表示 视频检测 支持车道关联雷达处理
+            /// wSupportMultiRadar&amp;0x1，表示 卡口RS485雷达 支持车道关联雷达处理
+            /// wSupportMultiRadar&amp;0x2，表示 卡口虚拟线圈 支持车道关联雷达处理
+            /// wSupportMultiRadar&amp;0x4，表示 混行卡口 支持车道关联雷达处理
+            /// wSupportMultiRadar&amp;0x8，表示 视频检测 支持车道关联雷达处理
             /// </summary>
             public byte byICRPresetNum;
             /// <summary>
@@ -24961,13 +24961,13 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte byExpandRs485SupportSensor;
             /// <summary>
-            /// byExpandRs485SupportSensor &0x1，表示电警车检器支持车检器
-            /// byExpandRs485SupportSensor &0x2，表示卡式电警车检器支持车检器
+            /// byExpandRs485SupportSensor &amp;0x1，表示电警车检器支持车检器
+            /// byExpandRs485SupportSensor &amp;0x2，表示卡式电警车检器支持车检器
             /// </summary>
             public byte byExpandRs485SupportSignalLampDet;
             /// <summary>
-            /// byExpandRs485SupportSignalLampDet &0x1，表示电警车检器支持外接信号灯检测器
-            /// byExpandRs485SupportSignalLampDet &0x2，表示卡式电警车检器支持外接信号灯检测器
+            /// byExpandRs485SupportSignalLampDet &amp;0x1，表示电警车检器支持外接信号灯检测器
+            /// byExpandRs485SupportSignalLampDet &amp;0x2，表示卡式电警车检器支持外接信号灯检测器
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 13, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
@@ -26858,7 +26858,7 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public NET_DVR_AREA_SMARTSEARCH_COND_UNION uSmartSearchCond;
             /// <summary>
-            /// 移动侦测搜索灵敏度,1	>80%  2 40%~80%  3 1%~40%
+            /// 移动侦测搜索灵敏度,1	&amp;gt;80%  2 40%~80%  3 1%~40%
             /// </summary>
             public byte bySensitivity;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 11, ArraySubType = UnmanagedType.I1)]
@@ -27037,14 +27037,14 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte bySupport;
             /// <summary>
-            /// bySupport & 0x1, 表示是否支持智能搜索
-            /// bySupport & 0x2, 表示是否支持备份
-            /// bySupport & 0x4, 表示是否支持压缩参数能力获取
-            /// bySupport & 0x8, 表示是否支持多网卡
-            /// bySupport & 0x10, 表示支持远程SADP
-            /// bySupport & 0x20, 表示支持Raid卡功能
-            /// bySupport & 0x40, 表示支持IPSAN搜索
-            /// bySupport & 0x80, 表示支持rtp over rtsp
+            /// bySupport &amp; 0x1, 表示是否支持智能搜索
+            /// bySupport &amp; 0x2, 表示是否支持备份
+            /// bySupport &amp; 0x4, 表示是否支持压缩参数能力获取
+            /// bySupport &amp; 0x8, 表示是否支持多网卡
+            /// bySupport &amp; 0x10, 表示支持远程SADP
+            /// bySupport &amp; 0x20, 表示支持Raid卡功能
+            /// bySupport &amp; 0x40, 表示支持IPSAN搜索
+            /// bySupport &amp; 0x80, 表示支持rtp over rtsp
             /// </summary>
             public byte byEsataUseage;
             /// <summary>
@@ -27060,12 +27060,12 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte bySupport1;
             /// <summary>
-            /// bySupport1 & 0x1, 表示是否支持snmp v30
-            /// bySupport1 & 0x2, 支持区分回放和下载
-            /// bySupport1 & 0x4, 是否支持布防优先级
-            /// bySupport1 & 0x8, 智能设备是否支持布防时间段扩展
-            /// bySupport1 & 0x10, 表示是否支持多磁盘数（超过33个）
-            /// bySupport1 & 0x20, 表示是否支持rtsp over http
+            /// bySupport1 &amp; 0x1, 表示是否支持snmp v30
+            /// bySupport1 &amp; 0x2, 支持区分回放和下载
+            /// bySupport1 &amp; 0x4, 是否支持布防优先级
+            /// bySupport1 &amp; 0x8, 智能设备是否支持布防时间段扩展
+            /// bySupport1 &amp; 0x10, 表示是否支持多磁盘数（超过33个）
+            /// bySupport1 &amp; 0x20, 表示是否支持rtsp over http
             /// </summary>
             public ushort wDevType;
             /// <summary>
@@ -27078,7 +27078,7 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte bySupport2;
             /// <summary>
-            /// bySupport2 & 0x1, 表示是否支持扩展的OSD字符叠加(终端和抓拍机扩展区分)
+            /// bySupport2 &amp; 0x1, 表示是否支持扩展的OSD字符叠加(终端和抓拍机扩展区分)
             /// </summary>
             public byte byAnalogAlarmInPortNum;
             /// <summary>
@@ -29552,7 +29552,7 @@ namespace QuickNV.HikvisionNetSDK
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = MAX_LICENSE_LEN, ArraySubType = UnmanagedType.I1)]
             public byte[] sLicense;
             /// <summary>
-            /// 区域索引值 0-保留，1-欧洲(Europe Region)，2-俄语区域(Russian Region)，3-欧洲&俄罗斯(EU&CIS), 4-中东(Middle East),0xff-所有
+            /// 区域索引值 0-保留，1-欧洲(Europe Region)，2-俄语区域(Russian Region)，3-欧洲&amp;俄罗斯(EU&amp;CIS), 4-中东(Middle East),0xff-所有
             /// </summary>
             public byte byRegion;
             /// <summary>
@@ -29657,7 +29657,7 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte byVehicleLogo;
             /// <summary>
-            /// 文件类型， :0定时抓图1 移动侦测抓图 2 报警抓图3  报警 | 移动侦测抓图 4 报警 & 移动侦测抓图     6 手动抓图 ,9-智能图片,10- PIR报警，11- 无线报警，12- 呼救报警,    0xa 预览时截图，0xd 人脸侦测, 0xe 越界侦测，0xf 入侵区域侦测，0x10 场景变更侦测, 0x11-设备本地回放时截图, 0x12-智能侦测
+            /// 文件类型， :0定时抓图1 移动侦测抓图 2 报警抓图3  报警 | 移动侦测抓图 4 报警 &amp; 移动侦测抓图     6 手动抓图 ,9-智能图片,10- PIR报警，11- 无线报警，12- 呼救报警,    0xa 预览时截图，0xd 人脸侦测, 0xe 越界侦测，0xf 入侵区域侦测，0x10 场景变更侦测, 0x11-设备本地回放时截图, 0x12-智能侦测
             /// </summary>
             public byte byFileType;
             /// <summary>
@@ -35767,7 +35767,7 @@ namespace QuickNV.HikvisionNetSDK
         public struct struStreamIDRet
         {
             /// <summary>
-            /// 录像类型 0-定时录像 1-移动侦测 2-报警录像 3-报警|移动侦测 4-报警&移动侦测 5-命令触发 6-手动录像 7-震动报警 8-环境触发 9-智能报警 10-回传录像
+            /// 录像类型 0-定时录像 1-移动侦测 2-报警录像 3-报警|移动侦测 4-报警&amp;移动侦测 5-命令触发 6-手动录像 7-震动报警 8-环境触发 9-智能报警 10-回传录像
             /// </summary>
             public uint dwRecordType;
             /// <summary>
@@ -36192,7 +36192,7 @@ namespace QuickNV.HikvisionNetSDK
             /// bit0-表示人脸抓拍报警上传（INTER_FACESNAP_RESULT）；0-表示二进制传输，1-表示URL传输（设备支持的情况下，设备支持能力根据具体报警能力集判断,同时设备需要支持URL的相关服务，当前是”云存储“）
             /// bit1-表示EVENT_JSON中图片数据长传类型；0-表示二进制传输，1-表示URL传输（设备支持的情况下，设备支持能力根据具体报警能力集判断）
             /// bit2 - 人脸比对(报警类型为COMM_SNAP_MATCH_ALARM)中图片数据上传类型：0 - 二进制传输，1 - URL传输
-            /// bit3 - 异常行为识别(报警类型为COMM_ALARM_RULE)中图片数据上传类型：0 - 二进制传输，1 - URL传输，本字段设备是否支持，对应软硬件能力集中<isSupportBehaviorUploadByCloudStorageURL>节点是否返回且为true
+            /// bit3 - 异常行为识别(报警类型为COMM_ALARM_RULE)中图片数据上传类型：0 - 二进制传输，1 - URL传输，本字段设备是否支持，对应软硬件能力集中&amp;lt;isSupportBehaviorUploadByCloudStorageURL&amp;gt;节点是否返回且为true
             /// </summary>
             public byte byCustomCtrl;
         }
@@ -36657,28 +36657,28 @@ namespace QuickNV.HikvisionNetSDK
             [MarshalAsAttribute(UnmanagedType.ByValTStr, SizeConst = STREAM_ID_LEN)]
             public string sStreamID;
             /// <summary>
-            /// < 流ID，长度小于32个字节
+            /// &amp;lt; 流ID，长度小于32个字节
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValTStr, SizeConst = 64)]
             public string sMonitorIP;
             /// <summary>
-            /// < 布防点ip
+            /// &amp;lt; 布防点ip
             /// </summary>
             public uint dwChanIndex;
             /// <summary>
-            /// < 布防点通道号
+            /// &amp;lt; 布防点通道号
             /// </summary>
             public uint dwWidth;
             /// <summary>
-            /// < 图像宽度
+            /// &amp;lt; 图像宽度
             /// </summary>
             public uint dwHeight;
             /// <summary>
-            /// < 图像高度
+            /// &amp;lt; 图像高度
             /// </summary>
             public NET_DVR_TIME struCheckTime;
             /// <summary>
-            /// < 检测时间(合并日期和时间字段)，格式：2012-08-06 13:00:00
+            /// &amp;lt; 检测时间(合并日期和时间字段)，格式：2012-08-06 13:00:00
             /// </summary>
             public byte byResult;
             /// <summary>
@@ -36686,35 +36686,35 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             public byte bySignalResult;
             /// <summary>
-            /// < 视频丢失检测结果 0-未检测 1-正常 2-异常
+            /// &amp;lt; 视频丢失检测结果 0-未检测 1-正常 2-异常
             /// </summary>
             public byte byBlurResult;
             /// <summary>
-            /// < 图像模糊检测结果，0-未检测 1-正常 2-异常
+            /// &amp;lt; 图像模糊检测结果，0-未检测 1-正常 2-异常
             /// </summary>
             public byte byLumaResult;
             /// <summary>
-            /// < 图像过亮检测结果，0-未检测 1-正常 2-异常
+            /// &amp;lt; 图像过亮检测结果，0-未检测 1-正常 2-异常
             /// </summary>
             public byte byChromaResult;
             /// <summary>
-            /// < 偏色检测结果，0-未检测 1-正常 2-异常
+            /// &amp;lt; 偏色检测结果，0-未检测 1-正常 2-异常
             /// </summary>
             public byte bySnowResult;
             /// <summary>
-            /// < 噪声干扰检测结果，0-未检测 1-正常 2-异常
+            /// &amp;lt; 噪声干扰检测结果，0-未检测 1-正常 2-异常
             /// </summary>
             public byte byStreakResult;
             /// <summary>
-            /// < 条纹干扰检测结果，0-未检测 1-正常 2-异常
+            /// &amp;lt; 条纹干扰检测结果，0-未检测 1-正常 2-异常
             /// </summary>
             public byte byFreezeResult;
             /// <summary>
-            /// < 画面冻结检测结果，0-未检测 1-正常 2-异常
+            /// &amp;lt; 画面冻结检测结果，0-未检测 1-正常 2-异常
             /// </summary>
             public byte byPTZResult;
             /// <summary>
-            /// < 云台检测结果，0-未检测 1-正常 2-异常
+            /// &amp;lt; 云台检测结果，0-未检测 1-正常 2-异常
             /// </summary>
             public byte byContrastResult;
             /// <summary>
@@ -36728,7 +36728,7 @@ namespace QuickNV.HikvisionNetSDK
             [MarshalAsAttribute(UnmanagedType.ByValTStr, SizeConst = 256)]
             public string sSNapShotURL;
             /// <summary>
-            /// <图片URL地址
+            /// &amp;lt;图片URL地址
             /// </summary>
             public byte byFlashResult;
             /// <summary>
