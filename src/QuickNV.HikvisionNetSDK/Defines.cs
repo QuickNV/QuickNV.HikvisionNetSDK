@@ -5228,8 +5228,6 @@ namespace QuickNV.HikvisionNetSDK
         /// ************************************************
         /// 校时结构参数
         /// </summary>
-        
-
         /*************************************************
         参数配置结构、参数(其中_V30为9000新增)
         **************************************************/
@@ -39252,9 +39250,9 @@ namespace QuickNV.HikvisionNetSDK
         /// Return:
         /// ********************************************************
         /// </summary>
-        public delegate void MSGCallBack(int lCommand, NET_DVR_ALARMER pAlarmer, IntPtr pAlarmInfo, uint dwBufLen, IntPtr pUser);
+        public delegate void MSGCallBack(int lCommand, ref NET_DVR_ALARMER pAlarmer, IntPtr pAlarmInfo, uint dwBufLen, IntPtr pUser);
 
-        public delegate bool MSGCallBack_V31(int lCommand, NET_DVR_ALARMER pAlarmer, IntPtr pAlarmInfo, uint dwBufLen, IntPtr pUser);
+        public delegate bool MSGCallBack_V31(int lCommand, ref NET_DVR_ALARMER pAlarmer, IntPtr pAlarmInfo, uint dwBufLen, IntPtr pUser);
 
         /// <summary>
         /// *******************************************************
@@ -39302,7 +39300,7 @@ namespace QuickNV.HikvisionNetSDK
         /// Return:
         /// ********************************************************
         /// </summary>
-        public delegate void STDDATACALLBACK(int lRealHandle, uint dwDataType, byte pBuffer, uint dwBufSize, uint dwUser);
+        public delegate void STDDATACALLBACK(int lRealHandle, uint dwDataType, ref byte pBuffer, uint dwBufSize, uint dwUser);
 
         /// <summary>
         /// *******************************************************

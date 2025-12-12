@@ -15,7 +15,8 @@ namespace HikvisionNetSDK.Generator
 
             // 读取源文件
             string sourceFile = "CHCNetSDK.cs";
-            string code = File.ReadAllText(sourceFile, Encoding.GetEncoding("gb2312"));
+            string code = File.ReadAllText(sourceFile, Encoding.GetEncoding("gb2312"))
+                .Replace("CHCNetSDK.", "");
 
             // 初始化生成器
             CodeGenerator generator = new CodeGenerator();
@@ -172,6 +173,7 @@ namespace Temp
         private StringBuilder errorsBuilder = new StringBuilder();
         private List<ErrorInfo> errorList = new List<ErrorInfo>();
         private List<MethodInfo> methodList = new List<MethodInfo>();
+        private static char[] SplitChars = new[] { '\r', '\n' };
 
         private class MethodInfo
         {
@@ -187,8 +189,30 @@ namespace Temp
             errorList.Add(errorInfo);
         }
 
+        /// <summary>
+        /// 移除 #region 和 #endregion 指令
+        /// </summary>
+        public class RegionRemover : CSharpSyntaxRewriter
+        {
+            public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
+            {
+                // 移除 #region 和 #endregion 指令
+                if (trivia.IsKind(SyntaxKind.RegionDirectiveTrivia) ||
+                    trivia.IsKind(SyntaxKind.EndRegionDirectiveTrivia))
+                {
+                    return default; // 返回默认值会移除该 trivia
+                }
+
+                return base.VisitTrivia(trivia);
+            }
+        }
+
         public void Generate(CompilationUnitSyntax root)
         {
+            //移除 #region 和 #endregion 指令
+            var remover = new RegionRemover();
+            root = (CompilationUnitSyntax)remover.Visit(root);
+
             // 构建Defines.cs文件头
             definesBuilder.AppendLine("using System;");
             definesBuilder.AppendLine("using System.Runtime.InteropServices;");
@@ -298,7 +322,7 @@ namespace Temp
                     if (!string.IsNullOrEmpty(docComment))
                     {
                         // 先移除多余的空行，然后添加缩进
-                        string[] commentLines = docComment.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                        string[] commentLines = docComment.Split(SplitChars, StringSplitOptions.RemoveEmptyEntries);
                         foreach (string line in commentLines)
                         {
                             definesBuilder.AppendLine($"        {line}");
@@ -319,7 +343,7 @@ namespace Temp
             definesBuilder.AppendLine();
             if (!string.IsNullOrEmpty(docComment))
             {
-                string[] commentLines = docComment.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                string[] commentLines = docComment.Split(SplitChars, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string line in commentLines)
                 {
                     definesBuilder.AppendLine($"        {line}");
@@ -347,7 +371,7 @@ namespace Temp
                     if (!string.IsNullOrEmpty(memberDocComment))
                     {
                         // 结构体成员注释：添加12个空格缩进
-                        string[] commentLines = memberDocComment.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                        string[] commentLines = memberDocComment.Split(SplitChars, StringSplitOptions.RemoveEmptyEntries);
                         foreach (string line in commentLines)
                         {
                             definesBuilder.AppendLine($"            {line}");
@@ -360,7 +384,7 @@ namespace Temp
                         definesBuilder.AppendLine("            " + attributeList.ToString().Trim());
                     }
 
-                    string fieldType = fieldDecl.Declaration.Type.ToString().Replace("CHCNetSDK.", "");
+                    string fieldType = fieldDecl.Declaration.Type.ToString();
                     string fieldModifiers = string.Join(" ", fieldDecl.Modifiers);
 
                     // 处理多个变量声明
@@ -433,23 +457,18 @@ namespace Temp
             string docComment = ConvertToDocComment(comment);
 
             // 生成委托声明
-            string returnType = delegateDecl.ReturnType.ToString().Replace("CHCNetSDK.", "");
+            string returnType = delegateDecl.ReturnType.ToString();
             string delegateName = delegateDecl.Identifier.Text;
             string modifiers = string.Join(" ", delegateDecl.Modifiers);
 
             // 处理参数列表
-            string parameters = string.Join(", ", delegateDecl.ParameterList.Parameters.Select(p =>
-            {
-                string paramType = p.Type.ToString().Replace("CHCNetSDK.", "");
-                string paramName = p.Identifier.Text;
-                return $"{paramType} {paramName}";
-            }));
+            string parameters = string.Join(", ", delegateDecl.ParameterList.Parameters.Select(p => p.ToFullString().Trim()));
 
             // 写入Defines.cs
             definesBuilder.AppendLine();
             if (!string.IsNullOrEmpty(docComment))
             {
-                string[] commentLines = docComment.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                string[] commentLines = docComment.Split(SplitChars, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string line in commentLines)
                 {
                     definesBuilder.AppendLine($"        {line}");
@@ -468,7 +487,7 @@ namespace Temp
             definesBuilder.AppendLine();
             if (!string.IsNullOrEmpty(docComment))
             {
-                string[] commentLines = docComment.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                string[] commentLines = docComment.Split(SplitChars, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string line in commentLines)
                 {
                     definesBuilder.AppendLine($"        {line}");
@@ -488,7 +507,7 @@ namespace Temp
             definesBuilder.AppendLine(enumDefinition);
             definesBuilder.AppendLine("        {");
 
-            var fullcode = enumDecl.Members.ToFullString().Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var fullcode = enumDecl.Members.ToFullString().Split(SplitChars, StringSplitOptions.RemoveEmptyEntries);
             // 遍历枚举成员
             for (int i = 0; i < enumDecl.Members.Count; i++)
             {
@@ -519,7 +538,7 @@ namespace Temp
                 if (!string.IsNullOrEmpty(memberDocComment))
                 {
                     // 枚举成员注释：添加12个空格缩进
-                    string[] commentLines = memberDocComment.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] commentLines = memberDocComment.Split(SplitChars, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string line in commentLines)
                     {
                         definesBuilder.AppendLine($"            {line}");
@@ -633,38 +652,24 @@ namespace Temp
                         if (!string.IsNullOrEmpty(docComment))
                         {
                             // 平台特定方法：添加8个空格的缩进（与方法声明一致）
-                            string[] commentLines = docComment.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                            string[] commentLines = docComment.Split(SplitChars, StringSplitOptions.RemoveEmptyEntries);
                             foreach (string line in commentLines)
                             {
                                 sb.AppendLine($"        {line}");
                             }
                         }
                         sb.AppendLine("        [DllImport(DllPath)]");
-
                         // 生成方法声明
                         string modifiers = string.Join(" ", methodDecl.Modifiers);
                         string returnType = methodDecl.ReturnType.ToString();
                         string methodName = methodDecl.Identifier.Text;
 
                         // 生成参数列表
-                        List<string> parameters = new List<string>();
-                        foreach (var param in methodDecl.ParameterList.Parameters)
-                        {
-                            string paramModifiers = string.Join(" ", param.Modifiers);
-                            string paramType = param.Type.ToString().Replace("CHCNetSDK.", "");
-                            string paramName = param.Identifier.Text;
-                            if (!string.IsNullOrEmpty(paramModifiers))
-                            {
-                                parameters.Add($"{paramModifiers} {paramType} {paramName}");
-                            }
-                            else
-                            {
-                                parameters.Add($"{paramType} {paramName}");
-                            }
-                        }
+                        // 处理参数列表
+                        string parameters = string.Join(", ", methodDecl.ParameterList.Parameters.Select(p => p.ToFullString().Trim()));
 
                         // 写入方法
-                        sb.AppendLine($"        {modifiers} {returnType} {methodName}({string.Join(", ", parameters)});");
+                        sb.AppendLine($"        {modifiers} {returnType} {methodName}({parameters});");
                         sb.AppendLine();
 
                         methodCount++;
@@ -683,7 +688,7 @@ namespace Temp
             sb.AppendLine("    }");
             sb.AppendLine("}");
 
-            File.WriteAllText($"{className}.cs", sb.ToString().Replace("CHCNetSDK.", ""));
+            File.WriteAllText($"{className}.cs", sb.ToString());
 
             // 调试信息
             Console.WriteLine($"Generated {className}.cs successfully");
@@ -733,7 +738,7 @@ namespace Temp
             sb.AppendLine("    }");
             sb.AppendLine("}");
 
-            File.WriteAllText("Methods.cs", sb.ToString().Replace("CHCNetSDK.", ""));
+            File.WriteAllText("Methods.cs", sb.ToString());
         }
 
         private void GenerateMethodWrapper(StringBuilder sb, MethodDeclarationSyntax methodDecl)
@@ -747,7 +752,7 @@ namespace Temp
                 if (!string.IsNullOrEmpty(docComment))
                 {
                     // 跨平台方法：添加8个空格的缩进
-                    string[] commentLines = docComment.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] commentLines = docComment.Split(SplitChars, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string line in commentLines)
                     {
                         sb.AppendLine($"        {line}");
@@ -769,26 +774,10 @@ namespace Temp
                 string paramModifiers = string.Join(" ", param.Modifiers);
 
                 // 生成参数声明
-                if (!string.IsNullOrEmpty(paramModifiers))
-                {
-                    parameters.Add($"{paramModifiers} {paramType} {paramName}");
-                }
-                else
-                {
-                    parameters.Add($"{paramType} {paramName}");
-                }
-
+                string paramFullText = param.ToFullString().Trim();
+                parameters.Add(paramFullText);
                 // 生成参数调用，保留ref/out修饰符
-                string callModifiers = string.Empty;
-                string paramFullText = param.ToString();
-                if (paramFullText.StartsWith("ref ") || paramFullText.Contains(" ref "))
-                {
-                    callModifiers = "ref";
-                }
-                else if (paramFullText.StartsWith("out ") || paramFullText.Contains(" out "))
-                {
-                    callModifiers = "out";
-                }
+                var callModifiers = param.Modifiers.ToString().Trim();
 
                 if (!string.IsNullOrEmpty(callModifiers))
                 {
@@ -849,7 +838,7 @@ namespace Temp
                     comment = comment.Substring(2, comment.Length - 4);
 
                     // 按行分割
-                    string[] lines = comment.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] lines = comment.Split(SplitChars, StringSplitOptions.RemoveEmptyEntries);
 
                     // 处理每行，移除开头的*或*
                     for (int i = 0; i < lines.Length; i++)
@@ -1085,17 +1074,13 @@ namespace Temp
             sb.AppendLine("/// <summary>");
 
             // 处理多行注释
-            string[] lines = comment.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] lines = comment.Split(SplitChars, StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in lines)
             {
                 string trimmedLine = line.Trim();
                 if (!string.IsNullOrEmpty(trimmedLine))
                 {
-                    // 跳过#region和#endregion指令
-                    if (!trimmedLine.StartsWith("#region") && !trimmedLine.StartsWith("#endregion"))
-                    {
-                        sb.AppendLine($"/// {trimmedLine}");
-                    }
+                    sb.AppendLine($"/// {trimmedLine}");
                 }
                 else
                 {
@@ -1114,18 +1099,12 @@ namespace Temp
             // 确保输出目录存在
             Directory.CreateDirectory(outputDir);
 
-            // 写入Defines.cs，移除所有#region和#endregion指令
-            string definesContent = definesBuilder.ToString()
-                .Replace("CHCNetSDK.", "")
-                .Replace("#region", "")
-                .Replace("#endregion", "");
+            // 写入Defines.cs
+            string definesContent = definesBuilder.ToString();
             File.WriteAllText(Path.Combine(outputDir, "Defines.cs"), definesContent);
 
             // 写入Errors.cs
-            string errorsContent = errorsBuilder.ToString()
-                .Replace("CHCNetSDK.", "")
-                .Replace("#region", "")
-                .Replace("#endregion", "");
+            string errorsContent = errorsBuilder.ToString();
             File.WriteAllText(Path.Combine(outputDir, "Errors.cs"), errorsContent);
         }
     }
