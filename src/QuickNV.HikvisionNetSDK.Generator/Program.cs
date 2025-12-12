@@ -271,6 +271,10 @@ namespace Temp
                                 {
                                     ProcessDelegate(delegateDecl);
                                 }
+                                else
+                                {
+                                    Console.WriteLine("Warning: Untranslated type.");
+                                }
                             }
                         }
                     }
@@ -406,6 +410,20 @@ namespace Temp
                             definesBuilder.AppendLine($"            {fieldType} {fieldName};");
                         }
                     }
+                }
+                else if (structMember is MethodDeclarationSyntax methodDecl)
+                {
+                    definesBuilder.AppendLine(methodDecl.ToFullString());
+                }
+                else if (structMember is StructDeclarationSyntax subStructDecl)
+                {
+                    //ProcessStruct(subStructDecl);
+                    definesBuilder.AppendLine(subStructDecl.ToFullString());
+                }
+                else
+                {
+                    definesBuilder.AppendLine(structMember.ToFullString());
+                    Console.WriteLine("Warning: Untranslated type.");
                 }
             }
 

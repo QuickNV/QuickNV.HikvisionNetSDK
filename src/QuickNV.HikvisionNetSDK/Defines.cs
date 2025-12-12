@@ -2995,6 +2995,11 @@ namespace QuickNV.HikvisionNetSDK
             public int dwSize;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 128, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void init()
+            {
+                byRes = new byte[128];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -3048,6 +3053,11 @@ namespace QuickNV.HikvisionNetSDK
             public IntPtr pInfraredFacePicBuffer;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 116, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void init()
+            {
+                byRes = new byte[116];
+            }
+
         }
         public const int ERROR_MSG_LEN = 32;
         public const int MAX_FINGER_PRINT_LEN = 768;
@@ -3086,6 +3096,14 @@ namespace QuickNV.HikvisionNetSDK
             public int dwCardReaderNo;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 20)]
             public byte[] byRes;
+            public void init()
+            {
+                byCardNo = new byte[ACS_CARD_NO_LEN];
+                byErrorMsg = new byte[ERROR_MSG_LEN];
+
+                byRes = new byte[20];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -3119,6 +3137,14 @@ namespace QuickNV.HikvisionNetSDK
             public byte[] byFingerData;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 96)]
             public byte[] byRes;
+            public void init()
+            {
+                byCardNo = new byte[ACS_CARD_NO_LEN];
+                byRes1 = new byte[30];
+                byFingerData = new byte[MAX_FINGER_PRINT_LEN];
+                byRes = new byte[96];
+            }
+
         }
         public const int MAX_ALARMHOST_ALARMIN_NUM = 512;
         public const int MAX_ALARMHOST_ALARMOUT_NUM = 512;
@@ -3184,6 +3210,13 @@ namespace QuickNV.HikvisionNetSDK
             public NET_DVR_FINGER_PRINT_BYCARD_V50 struProcessMode;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 64)]
             public byte[] byRes;
+            public void init()
+            {
+                byRes1 = new byte[3];
+                byRes = new byte[64];
+                struProcessMode.init();
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -3199,6 +3232,15 @@ namespace QuickNV.HikvisionNetSDK
             public byte[] byRes1;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = NET_SDK_EMPLOYEE_NO_LEN)]
             public byte[] byEmployeeNo;
+            public void init()
+            {
+                byCardNo = new byte[ACS_CARD_NO_LEN];
+                byEnableCardReader = new byte[MAX_CARD_READER_NUM_512];
+                byFingerPrintID = new byte[MAX_FINGER_PRINT_NUM];
+                byRes1 = new byte[2];
+                byEmployeeNo = new byte[NET_SDK_EMPLOYEE_NO_LEN];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -3209,6 +3251,11 @@ namespace QuickNV.HikvisionNetSDK
             public byte byStatus;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 63)]
             public byte[] byRes;
+            public void init()
+            {
+                byRes = new byte[63];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -3225,6 +3272,12 @@ namespace QuickNV.HikvisionNetSDK
             public byte byFingerNo;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 126)]
             public byte[] byRes;
+
+            public void init()
+            {
+                byRes = new byte[126];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -3258,6 +3311,13 @@ namespace QuickNV.HikvisionNetSDK
             public byte byFingerPrintQuality;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 62)]
             public byte[] byRes;
+
+            public void init()
+            {
+                byFingerData = new byte[MAX_FINGER_PRINT_LEN];
+                byRes = new byte[62];
+            }
+
         }
 
         /// <summary>
@@ -3351,6 +3411,21 @@ namespace QuickNV.HikvisionNetSDK
             public byte byEnableDNS;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 599, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void Init()
+            {
+                struEtherNet = new NET_DVR_ETHERNET_V30[MAX_ETHERNET];
+                struRes1 = new NET_DVR_IPADDR[2];
+                struAlarmHostIpAddr = new NET_DVR_IPADDR();
+                struAlarmHost2IpAddr = new NET_DVR_IPADDR();
+                struDnsServer1IpAddr = new NET_DVR_IPADDR();
+                struDnsServer2IpAddr = new NET_DVR_IPADDR();
+                byIpResolver = new byte[MAX_DOMAIN_NAME];
+                struMulticastIpAddr = new NET_DVR_IPADDR();
+                struGatewayIpAddr = new NET_DVR_IPADDR();
+                struPPPoE = new NET_DVR_PPPOECFG();
+                byRes = new byte[599];
+            }
+
         }
         public const int MAX_CENTERNUM = 4;
 
@@ -3565,6 +3640,12 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 117, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void Init()
+            {
+                bySupportAlarmInType = new byte[16];
+                byRes = new byte[117];
+            }
+
         }
         public const int ALARMHOST_ABILITY = 0x500;
 
@@ -3576,6 +3657,12 @@ namespace QuickNV.HikvisionNetSDK
             public NET_DVR_ALARMHOST_NETPARAM_V50[] struNetCenter;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 128, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes1;
+            public void Init()
+            {
+                struNetCenter = new NET_DVR_ALARMHOST_NETPARAM_V50[MAX_CENTERNUM];
+                byRes1 = new byte[128];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -3622,6 +3709,16 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 28, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes2;
+            public void Init()
+            {
+                struIP = new NET_DVR_IPADDR();
+                byDomainName = new byte[MAX_DOMAIN_NAME];
+                byDevID = new byte[ACCOUNTNUM_LEN_32];
+                byRes1 = new byte[3];
+                byEHomeKey = new byte[NET_SDK_EHOME_KEY_LEN];
+                byRes2 = new byte[28];
+            }
+
         }
         /// <summary>
         /// Set Net info V50
@@ -3663,12 +3760,22 @@ namespace QuickNV.HikvisionNetSDK
         public struct NET_DVR_INDEX
         {
             public uint iIndex;
+            public void Init()
+            {
+                iIndex = 1;
+            }
+
         }
 
         public struct NET_DVR_INBUFF
         {
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 16, ArraySubType = UnmanagedType.U4)]
             public uint[] StatusList;
+            public void Init()
+            {
+                StatusList = new uint[16];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -3709,6 +3816,17 @@ namespace QuickNV.HikvisionNetSDK
             public byte[] byAlarmNetCard;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 252, ArraySubType = UnmanagedType.Struct)]
             public byte[] byRes2;
+            public void Init()
+            {
+                byRes = new byte[2];
+                byChanAlarmMode = new byte[4];
+                byDealFailCenter = new byte[16];
+                byZoneReport = new byte[512];
+                byNonZoneReport = new byte[32];
+                byAlarmNetCard = new byte[4];
+                byRes2 = new byte[252];
+            }
+
         }
         /// <summary>
         /// door name len
@@ -3823,6 +3941,16 @@ namespace QuickNV.HikvisionNetSDK
             public byte byLadderControlDelayTime;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 43, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes2;
+
+            public void Init()
+            {
+                byDoorName = new byte[DOOR_NAME_LEN];
+                byStressPassword = new byte[STRESS_PASSWORD_LEN];
+                bySuperPassword = new byte[SUPER_PASSWORD_LEN];
+                byUnlockPassword = new byte[UNLOCK_PASSWORD_LEN];
+                byRes2 = new byte[43];
+            }
+
         }
         /// <summary>
         /// get door parameter
@@ -5589,6 +5717,13 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 128, ArraySubType = UnmanagedType.I1)]
             public byte[] byIPv6;
+
+            public void Init()
+            {
+                sIpV4 = new byte[16];
+                byIPv6 = new byte[128];
+            }
+
         }
 
         /// <summary>
@@ -7701,6 +7836,18 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 224, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes1;
+
+            public void Init()
+            {
+                sLicense = new byte[MAX_LICENSE_LEN];
+                byRes = new byte[21];
+                sCardNo = new byte[MAX_CARDNO_LEN];
+                struStartTime = new NET_DVR_TIME_V30();
+                struStopTime = new NET_DVR_TIME_V30();
+                sOperateIndex = new byte[MAX_OPERATE_INDEX_LEN];
+                byRes1 = new byte[224];
+            }
+
         }
         /// <summary>
         /// 卡号最大长度
@@ -7744,6 +7891,15 @@ namespace QuickNV.HikvisionNetSDK
             public int dwDataIndex;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 116, ArraySubType = UnmanagedType.Struct)]
             public byte[] byRes;
+
+            public void Init()
+            {
+                sLicense = new byte[MAX_LICENSE_LEN];
+                sCardNo = new byte[MAX_CARDNO_LEN];
+                byRes1 = new byte[3];
+                byRes = new byte[116];
+            }
+
         }
 
         /// <summary>
@@ -8543,6 +8699,49 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = MAX_DISKNUM_V30, ArraySubType = UnmanagedType.I1)]
             public byte[] byDiskNumber;
+            public void Init()
+            {
+                dwAlarmType = 0;
+                dwAlarmInputNumber = 0;
+                byAlarmRelateChannel = new byte[MAX_CHANNUM_V30];
+                byChannel = new byte[MAX_CHANNUM_V30];
+                byAlarmOutputNumber = new byte[MAX_ALARMOUT_V30];
+                byDiskNumber = new byte[MAX_DISKNUM_V30];
+                for (int i = 0; i < MAX_CHANNUM_V30; i++)
+                {
+                    byAlarmRelateChannel[i] = Convert.ToByte(0);
+                    byChannel[i] = Convert.ToByte(0);
+                }
+                for (int i = 0; i < MAX_ALARMOUT_V30; i++)
+                {
+                    byAlarmOutputNumber[i] = Convert.ToByte(0);
+                }
+                for (int i = 0; i < MAX_DISKNUM_V30; i++)
+                {
+                    byDiskNumber[i] = Convert.ToByte(0);
+                }
+            }
+
+            public void Reset()
+            {
+                dwAlarmType = 0;
+                dwAlarmInputNumber = 0;
+
+                for (int i = 0; i < MAX_CHANNUM_V30; i++)
+                {
+                    byAlarmRelateChannel[i] = Convert.ToByte(0);
+                    byChannel[i] = Convert.ToByte(0);
+                }
+                for (int i = 0; i < MAX_ALARMOUT_V30; i++)
+                {
+                    byAlarmOutputNumber[i] = Convert.ToByte(0);
+                }
+                for (int i = 0; i < MAX_DISKNUM_V30; i++)
+                {
+                    byDiskNumber[i] = Convert.ToByte(0);
+                }
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -8598,6 +8797,49 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = MAX_DISKNUM, ArraySubType = UnmanagedType.U4)]
             public int[] dwDiskNumber;
+            public void Init()
+            {
+                dwAlarmType = 0;
+                dwAlarmInputNumber = 0;
+                dwAlarmOutputNumber = new int[MAX_ALARMOUT];
+                dwAlarmRelateChannel = new int[MAX_CHANNUM];
+                dwChannel = new int[MAX_CHANNUM];
+                dwDiskNumber = new int[MAX_DISKNUM];
+                for (int i = 0; i < MAX_ALARMOUT; i++)
+                {
+                    dwAlarmOutputNumber[i] = 0;
+                }
+                for (int i = 0; i < MAX_CHANNUM; i++)
+                {
+                    dwAlarmRelateChannel[i] = 0;
+                    dwChannel[i] = 0;
+                }
+                for (int i = 0; i < MAX_DISKNUM; i++)
+                {
+                    dwDiskNumber[i] = 0;
+                }
+            }
+
+            public void Reset()
+            {
+                dwAlarmType = 0;
+                dwAlarmInputNumber = 0;
+
+                for (int i = 0; i < MAX_ALARMOUT; i++)
+                {
+                    dwAlarmOutputNumber[i] = 0;
+                }
+                for (int i = 0; i < MAX_CHANNUM; i++)
+                {
+                    dwAlarmRelateChannel[i] = 0;
+                    dwChannel[i] = 0;
+                }
+                for (int i = 0; i < MAX_DISKNUM; i++)
+                {
+                    dwDiskNumber[i] = 0;
+                }
+            }
+
         }
 
         /// <summary>
@@ -8637,6 +8879,14 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 34, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void Init()
+            {
+                sUserName = new byte[NAME_LEN];
+                sPassword = new byte[PASSWD_LEN];
+                byRes = new byte[34];
+            }
+
         }
 
         /// <summary>
@@ -8684,6 +8934,15 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 34, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes2;
+
+            public void Init()
+            {
+                sUserName = new byte[NAME_LEN];
+                sPassword = new byte[PASSWD_LEN];
+                byDomain = new byte[MAX_DOMAIN_NAME];
+                byRes2 = new byte[34];
+            }
+
         }
 
         /// <summary>
@@ -8718,6 +8977,11 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 31, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void Init()
+            {
+                byRes = new byte[31];
+            }
+
         }
 
         /// <summary>
@@ -8746,6 +9010,24 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = MAX_IP_CHANNEL, ArraySubType = UnmanagedType.Struct)]
             public NET_DVR_IPCHANINFO[] struIPChanInfo;
+
+            public void Init()
+            {
+                int i = 0;
+                struIPDevInfo = new NET_DVR_IPDEVINFO[MAX_IP_DEVICE];
+
+                for (i = 0; i < MAX_IP_DEVICE; i++)
+                {
+                    struIPDevInfo[i].Init();
+                }
+                byAnalogChanEnable = new byte[MAX_ANALOG_CHANNUM];
+                struIPChanInfo = new NET_DVR_IPCHANINFO[MAX_IP_CHANNEL];
+                for (i = 0; i < MAX_IP_CHANNEL; i++)
+                {
+                    struIPChanInfo[i].Init();
+                }
+            }
+
         }
 
         /// <summary>
@@ -8774,6 +9056,24 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = MAX_IP_CHANNEL, ArraySubType = UnmanagedType.Struct)]
             public NET_DVR_IPCHANINFO[] struIPChanInfo;
+
+            public void Init()
+            {
+                int i = 0;
+                struIPDevInfo = new NET_DVR_IPDEVINFO_V31[MAX_IP_DEVICE];
+
+                for (i = 0; i < MAX_IP_DEVICE; i++)
+                {
+                    struIPDevInfo[i].Init();
+                }
+                byAnalogChanEnable = new byte[MAX_ANALOG_CHANNUM];
+                struIPChanInfo = new NET_DVR_IPCHANINFO[MAX_IP_CHANNEL];
+                for (i = 0; i < MAX_IP_CHANNEL; i++)
+                {
+                    struIPChanInfo[i].Init();
+                }
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -8799,6 +9099,17 @@ namespace QuickNV.HikvisionNetSDK
             public byte byChannel;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 11, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes2;
+            public void Init()
+            {
+                byRes = new byte[3];
+                byDVRName = new byte[NAME_LEN];
+                byRes1 = new ushort[2];
+                byDVRSerialNumber = new byte[SERIALNO_LEN];
+                byUserName = new byte[NAME_LEN];
+                byPassWord = new byte[PASSWD_LEN];
+                byRes2 = new byte[11];
+            }
+
         }
 
         /// <summary>
@@ -8932,6 +9243,17 @@ namespace QuickNV.HikvisionNetSDK
             public byte byTransProtocol;
             public byte byTransMode;
             public byte byFactoryType;
+            public void Init()
+            {
+                byRes1 = new byte[3];
+                byRes3 = new byte[2];
+                sDVRName = new byte[NAME_LEN];
+                sDVRSerialNumber = new byte[SERIALNO_LEN];
+                sUserName = new byte[NAME_LEN];
+                sPassWord = new byte[PASSWD_LEN];
+                byRes4 = new byte[2];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -8945,6 +9267,12 @@ namespace QuickNV.HikvisionNetSDK
             public byte byChannel;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 7, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void Init()
+            {
+                strURL = new byte[240];
+                byRes = new byte[7];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -8971,6 +9299,18 @@ namespace QuickNV.HikvisionNetSDK
             public byte byChannel;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 11, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes2;
+            public void Init()
+            {
+                byRes = new byte[3];
+                byDDNSDomain = new byte[64];
+                byAlias = new byte[NAME_LEN];
+                byRes1 = new byte[2];
+                byDVRSerialNumber = new byte[SERIALNO_LEN];
+                byUserName = new byte[NAME_LEN];
+                byPassWord = new byte[PASSWD_LEN];
+                byRes2 = new byte[11];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -9011,6 +9351,11 @@ namespace QuickNV.HikvisionNetSDK
             [FieldOffset(0)]
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 492, ArraySubType = UnmanagedType.I1)]
             public byte[] byUnion;
+            public void Init()
+            {
+                byUnion = new byte[492];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -9025,6 +9370,13 @@ namespace QuickNV.HikvisionNetSDK
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 3, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
             public NET_DVR_GET_STREAM_UNION uGetStream;
+            public void Init()
+            {
+                byGetStreamType = 0;
+                byRes = new byte[3];
+                //uGetStream.Init();
+            }
+
         }
 
         /// <summary>
@@ -9115,6 +9467,12 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 18, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void Init()
+            {
+                byRes = new byte[18];
+            }
+
         }
 
         /// <summary>
@@ -9133,6 +9491,16 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = MAX_IP_ALARMOUT, ArraySubType = UnmanagedType.Struct)]
             public NET_DVR_IPALARMOUTINFO[] struIPAlarmOutInfo;
+
+            public void Init()
+            {
+                struIPAlarmOutInfo = new NET_DVR_IPALARMOUTINFO[MAX_IP_ALARMOUT];
+                for (int i = 0; i < MAX_IP_ALARMOUT; i++)
+                {
+                    struIPAlarmOutInfo[i].Init();
+                }
+            }
+
         }
 
         /// <summary>
@@ -10504,6 +10872,18 @@ namespace QuickNV.HikvisionNetSDK
             /// 当前的通道号，0xffffffff表示无效
             /// </summary>
             public uint dwChannelNo;
+
+            public void Init()
+            {
+                struClientIP = new NET_DVR_IPADDR[MAX_LINK];
+
+                for (int i = 0; i < MAX_LINK; i++)
+                {
+                    struClientIP[i].Init();
+                }
+                byRes = new byte[12];
+            }
+
         }
 
         /// <summary>
@@ -10692,6 +11072,21 @@ namespace QuickNV.HikvisionNetSDK
             public byte[] byAudioChanStatus;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 10, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void Init()
+            {
+                struHardDiskStatic = new NET_DVR_DISKSTATE[MAX_DISKNUM_V30];
+                struChanStatic = new NET_DVR_CHANNELSTATE_V30[MAX_CHANNUM_V30];
+                for (int i = 0; i < MAX_CHANNUM_V30; i++)
+                {
+                    struChanStatic[i].Init();
+                }
+                byAlarmInStatic = new byte[MAX_ALARMOUT_V30];
+                byAlarmOutStatic = new byte[MAX_ALARMOUT_V30];
+                byAudioChanStatus = new byte[MAX_AUDIO_V30];
+                byRes = new byte[10];
+            }
+
         }
 
         /// <summary>
@@ -10726,6 +11121,15 @@ namespace QuickNV.HikvisionNetSDK
             /// 本地显示状态,0-正常,1-不正常
             /// </summary>
             public uint dwLocalDisplay;
+
+            public void Init()
+            {
+                struHardDiskStatic = new NET_DVR_DISKSTATE[MAX_DISKNUM];
+                struChanStatic = new NET_DVR_CHANNELSTATE[MAX_CHANNUM];
+                byAlarmInStatic = new byte[MAX_ALARMIN];
+                byAlarmOutStatic = new byte[MAX_ALARMOUT];
+            }
+
         }
 
         /// <summary>
@@ -10919,6 +11323,12 @@ namespace QuickNV.HikvisionNetSDK
         {
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = MAX_ALARMOUT_V30, ArraySubType = UnmanagedType.I1)]
             public byte[] Output;
+
+            public void Init()
+            {
+                Output = new byte[MAX_ALARMOUT_V30];
+            }
+
         }
 
         /// <summary>
@@ -11813,6 +12223,22 @@ namespace QuickNV.HikvisionNetSDK
             /// 回放下载模式 1－按名字 2－按时间
             /// </summary>
             public ushort wLoadMode;
+
+            [StructLayoutAttribute(LayoutKind.Explicit)]
+            public struct mode_size
+            {
+                [FieldOffsetAttribute(0)]
+                [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 100, ArraySubType = UnmanagedType.I1)]
+                public byte[] byRes;
+
+                /*[FieldOffsetAttribute(0)]
+                [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 100, ArraySubType = UnmanagedType.I1)]             
+                public byte[] byFile;/* 回放的文件名 */
+                /*[FieldOffsetAttribute(0)]
+                public bytime bytime;
+                * */
+            }
+
         }
 
         /// <summary>
@@ -11847,6 +12273,40 @@ namespace QuickNV.HikvisionNetSDK
             /// 连接类型 0－主码流 1－子码流
             /// </summary>
             public uint dwLinkType;
+
+            [StructLayoutAttribute(LayoutKind.Explicit)]
+            public struct objectInfo
+            {
+                [StructLayoutAttribute(LayoutKind.Sequential)]
+                public struct userInfo
+                {
+                    [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 32, ArraySubType = UnmanagedType.I1)]
+                    public byte[] sUserName;/*请求视频用户名*/
+                    [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 16, ArraySubType = UnmanagedType.I1)]
+                    public byte[] sPassword;/* 密码 */
+                    [MarshalAsAttribute(UnmanagedType.ByValTStr, SizeConst = 52)]
+                    public string cReserve;
+                }
+
+                [StructLayoutAttribute(LayoutKind.Sequential)]
+                public struct fileInfo
+                {
+                    [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 100, ArraySubType = UnmanagedType.I1)]
+                    public byte[] fileName;
+                }
+                [StructLayoutAttribute(LayoutKind.Sequential)]
+                public struct timeInfo
+                {
+                    public uint dwChannel;
+                    [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 32, ArraySubType = UnmanagedType.I1)]
+                    public byte[] sUserName;/*请求视频用户名*/
+                    [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 16, ArraySubType = UnmanagedType.I1)]
+                    public byte[] sPassword;/* 密码 */
+                    public NET_DVR_TIME struStartTime;/* 按时间回放的开始时间 */
+                    public NET_DVR_TIME struStopTime;/* 按时间回放的结束时间 */
+                }
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -11972,6 +12432,16 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = MAX_EMAIL_PWD_LEN, ArraySubType = UnmanagedType.I1)]
             public byte[] sPassword;
+
+            [StructLayoutAttribute(LayoutKind.Sequential)]
+            public struct struSender
+            {
+                [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = NAME_LEN, ArraySubType = UnmanagedType.I1)]
+                public byte[] sName;/* 发件人姓名 */
+                [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = MAX_EMAIL_ADDR_LEN, ArraySubType = UnmanagedType.I1)]
+                public byte[] sAddress;/* 发件人地址 */
+            }
+
             /// <summary>
             /// smtp服务器
             /// </summary>
@@ -12385,6 +12855,12 @@ namespace QuickNV.HikvisionNetSDK
             public string sNfsHostIPAddr;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = PATHNAME_LEN, ArraySubType = UnmanagedType.I1)]
             public byte[] sNfsDirectory;
+
+            public void Init()
+            {
+                this.sNfsDirectory = new byte[PATHNAME_LEN];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -12393,6 +12869,17 @@ namespace QuickNV.HikvisionNetSDK
             public uint dwSize;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = MAX_NFS_DISK, ArraySubType = UnmanagedType.Struct)]
             public NET_DVR_SINGLE_NFS[] struNfsDiskParam;
+
+            public void Init()
+            {
+                this.struNfsDiskParam = new NET_DVR_SINGLE_NFS[MAX_NFS_DISK];
+
+                for (int i = 0; i < MAX_NFS_DISK; i++)
+                {
+                    struNfsDiskParam[i].Init();
+                }
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -12449,6 +12936,15 @@ namespace QuickNV.HikvisionNetSDK
             /// 保留
             /// </summary>
             public byte Reserve;
+
+            public void Init()
+            {
+                PresetNum = 0;
+                Dwell = 0;
+                Speed = 0;
+                Reserve = 0;
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -12459,6 +12955,16 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 32, ArraySubType = UnmanagedType.Struct)]
             public NET_DVR_CRUISE_POINT[] struCruisePoint;
+
+            public void Init()
+            {
+                struCruisePoint = new NET_DVR_CRUISE_POINT[32];
+                for (int i = 0; i < 32; i++)
+                {
+                    struCruisePoint[i].Init();
+                }
+            }
+
         }
 
         /// <summary>
@@ -13177,6 +13683,11 @@ namespace QuickNV.HikvisionNetSDK
             [FieldOffsetAttribute(0)]
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 300, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void Init()
+            {
+                byRes = new byte[300];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
@@ -13785,6 +14296,14 @@ namespace QuickNV.HikvisionNetSDK
             /// 放大的子窗口号
             /// </summary>
             public byte byEnlargeSubWindowIndex;
+            [StructLayoutAttribute(LayoutKind.Explicit)]
+            public struct struDiff
+            {
+                [FieldOffsetAttribute(0)]
+                [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 16, ArraySubType = UnmanagedType.I1)]
+                public byte[] byRes;
+            }
+
             /// <summary>
             /// 区分共用体，0-视频综合平台内部解码器显示通道配置，1-其他解码器显示通道配置
             /// </summary>
@@ -14494,6 +15013,14 @@ namespace QuickNV.HikvisionNetSDK
             public ushort wBigScreenY;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 12, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes2;
+
+            public void Init()
+            {
+                byRes1 = new byte[2];
+                struFollowSingleScreen = new NET_DVR_SINGLESCREENCFG[MAX_BIGSCREENNUM];
+                byRes2 = new byte[12];
+            }
+
         }
 
         /// <summary>
@@ -15824,6 +16351,19 @@ namespace QuickNV.HikvisionNetSDK
             /// 0 不加密；1 wep加密；2 wpa-psk;
             /// </summary>
             public uint dwSecurity;
+            [StructLayoutAttribute(LayoutKind.Explicit)]
+            public struct key
+            {
+                [FieldOffsetAttribute(0)]
+                public UNION_WEP wep;
+
+                [FieldOffsetAttribute(0)]
+                public UNION_WPA_PSK wpa_psk;
+
+                [FieldOffsetAttribute(0)]
+                public UNION_WPA_WPA2 wpa_wpa2;//WPA-enterprise/WPA2-enterpris模式适用
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -18690,6 +19230,14 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 2, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            [StructLayout(LayoutKind.Explicit)]
+            public struct uModeParam
+            {
+                [FieldOffsetAttribute(0)]
+                [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 4, ArraySubType = UnmanagedType.U4)]
+                public uint[] dwULen;
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -19307,6 +19855,12 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 32, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void Init()
+            {
+                byID = new byte[STREAM_ID_LEN];
+                byRes = new byte[32];
+            }
+
         }
         /// <summary>
         /// 事件搜索条件 200-04-07 9000_1.1
@@ -19327,6 +19881,13 @@ namespace QuickNV.HikvisionNetSDK
             public byte[] byAlarmInNo;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = SEARCH_EVENT_INFO_LEN - MAX_ALARMIN_V30, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void init()
+            {
+                byAlarmInNo = new byte[MAX_ALARMIN_V30];
+                byRes = new byte[SEARCH_EVENT_INFO_LEN - MAX_CHANNUM_V30];
+            }
+
         }
 
         /// <summary>
@@ -19343,6 +19904,13 @@ namespace QuickNV.HikvisionNetSDK
             public ushort[] wAlarmInNo;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 44, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void init()
+            {
+                wAlarmInNo = new ushort[128];
+                byRes = new byte[44];
+            }
+
         }
 
         /// <summary>
@@ -19359,6 +19927,13 @@ namespace QuickNV.HikvisionNetSDK
             public byte[] byMotDetChanNo;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = SEARCH_EVENT_INFO_LEN - MAX_CHANNUM_V30, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void init()
+            {
+                byMotDetChanNo = new byte[MAX_CHANNUM_V30];
+                byRes = new byte[SEARCH_EVENT_INFO_LEN - MAX_CHANNUM_V30];
+            }
+
         }
 
         /// <summary>
@@ -19375,6 +19950,13 @@ namespace QuickNV.HikvisionNetSDK
             public ushort[] wMotDetChanNo;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 172, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void init()
+            {
+                wMotDetChanNo = new ushort[64];
+                byRes = new byte[172];
+            }
+
         }
 
         /// <summary>
@@ -19398,6 +19980,13 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 235, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes1;
+
+            public void init()
+            {
+                byChanNo = new byte[MAX_CHANNUM_V30];
+                byRes1 = new byte[235];
+            }
+
         }
 
         /// <summary>
@@ -19421,6 +20010,12 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 171, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void init()
+            {
+                wChanNo = new ushort[64];
+                byRes = new byte[171];
+            }
+
         }
 
         /// <summary>
@@ -19439,6 +20034,11 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 299, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void init()
+            {
+                byRes = new byte[299];
+            }
+
         }
 
         /// <summary>
@@ -19458,6 +20058,12 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 44, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void init()
+            {
+                byChan = new byte[256];
+                byRes = new byte[44];
+            }
+
         }
 
         /// <summary>
@@ -19478,6 +20084,12 @@ namespace QuickNV.HikvisionNetSDK
             public byte byAll;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 47, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void init()
+            {
+                dwChanNo = new uint[MAX_CHANNUM_V30 - 1];
+                byRes = new byte[47];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -19497,6 +20109,12 @@ namespace QuickNV.HikvisionNetSDK
             public byte byBackupVolumeNum;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 223, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void init()
+            {
+                struIDInfo.Init();
+                byRes = new byte[223];
+            }
+
         }
 
         [StructLayout(LayoutKind.Explicit)]
@@ -19552,6 +20170,12 @@ namespace QuickNV.HikvisionNetSDK
             public uint dwAlarmInNo;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = SEARCH_EVENT_INFO_LEN, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void init()
+            {
+                byRes = new byte[SEARCH_EVENT_INFO_LEN];
+            }
+
         }
 
         /// <summary>
@@ -19567,6 +20191,12 @@ namespace QuickNV.HikvisionNetSDK
             public uint dwMotDetNo;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = SEARCH_EVENT_INFO_LEN, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void init()
+            {
+                byRes = new byte[SEARCH_EVENT_INFO_LEN];
+            }
+
         }
 
         /// <summary>
@@ -19598,6 +20228,13 @@ namespace QuickNV.HikvisionNetSDK
             /// 行为事件参数，wMinorType = VCA_EVENT_TYPE决定事件类型
             /// </summary>
             public NET_VCA_EVENT_UNION uEvent;
+
+            public void init()
+            {
+                byRes1 = new byte[3];
+                byRuleName = new byte[NAME_LEN];
+            }
+
         }
 
         /// <summary>
@@ -19637,6 +20274,13 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 288, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes2;
+
+            public void init()
+            {
+                byRes1 = new byte[6];
+                byRes2 = new byte[288];
+            }
+
         }
 
         /// <summary>
@@ -19675,6 +20319,14 @@ namespace QuickNV.HikvisionNetSDK
             public uint dwFileIndex;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 256, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void init()
+            {
+                byRes1 = new byte[2];
+                byFileName = new byte[NAME_LEN];
+                byRes = new byte[256];
+            }
+
         }
 
         [StructLayout(LayoutKind.Explicit)]
@@ -19713,6 +20365,13 @@ namespace QuickNV.HikvisionNetSDK
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 36, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
             public SEARCH_EVENT_RET uSeniorRet;
+
+            public void init()
+            {
+                byChan = new byte[MAX_CHANNUM_V30];
+                byRes = new byte[36];
+            }
+
         }
 
         /// <summary>
@@ -20143,6 +20802,12 @@ namespace QuickNV.HikvisionNetSDK
             /// time segment parameter
             /// </summary>
             public NET_DVR_TIME_SEGMENT struTimeSegment;
+
+            public void Init()
+            {
+                byRes = new byte[5];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -20162,6 +20827,18 @@ namespace QuickNV.HikvisionNetSDK
             public NET_DVR_SINGLE_PLAN_SEGMENT[] struPlanCfg;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes2;
+
+            public void Init()
+            {
+                struPlanCfg = new NET_DVR_SINGLE_PLAN_SEGMENT[MAX_DAYS * MAX_TIMESEGMENT_V30];
+                foreach (NET_DVR_SINGLE_PLAN_SEGMENT singlStruPlanCfg in struPlanCfg)
+                {
+                    singlStruPlanCfg.Init();
+                }
+                byRes1 = new byte[3];
+                byRes2 = new byte[16];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -20189,6 +20866,18 @@ namespace QuickNV.HikvisionNetSDK
             public NET_DVR_SINGLE_PLAN_SEGMENT[] struPlanCfg;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
             public byte[] byRes2;
+
+            public void Init()
+            {
+                struPlanCfg = new NET_DVR_SINGLE_PLAN_SEGMENT[MAX_TIMESEGMENT_V30];
+                foreach (NET_DVR_SINGLE_PLAN_SEGMENT singlStruPlanCfg in struPlanCfg)
+                {
+                    singlStruPlanCfg.Init();
+                }
+                byRes1 = new byte[3];
+                byRes2 = new byte[16];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -20213,6 +20902,15 @@ namespace QuickNV.HikvisionNetSDK
             public uint[] dwHolidayPlanNo;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes2;
+
+            public void Init()
+            {
+                byGroupName = new byte[HOLIDAY_GROUP_NAME_LEN];
+                dwHolidayPlanNo = new uint[MAX_HOLIDAY_PLAN_NUM];
+                byRes1 = new byte[3];
+                byRes2 = new byte[32];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -20241,6 +20939,15 @@ namespace QuickNV.HikvisionNetSDK
             public uint[] dwHolidayGroupNo;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes2;
+
+            public void Init()
+            {
+                byTemplateName = new byte[TEMPLATE_NAME_LEN];
+                dwHolidayGroupNo = new uint[MAX_HOLIDAY_GROUP_NUM];
+                byRes1 = new byte[3];
+                byRes2 = new byte[32];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -20257,6 +20964,11 @@ namespace QuickNV.HikvisionNetSDK
             public ushort wLocalControllerID;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 106, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void Init()
+            {
+                byRes = new byte[106];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -20273,6 +20985,12 @@ namespace QuickNV.HikvisionNetSDK
             public ushort wLocalControllerID;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 106, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void Init()
+            {
+                byRes = new byte[106];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -20289,6 +21007,12 @@ namespace QuickNV.HikvisionNetSDK
             public ushort wLocalControllerID;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 106, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void Init()
+            {
+                byRes = new byte[106];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -20305,6 +21029,12 @@ namespace QuickNV.HikvisionNetSDK
             public ushort wLocalControllerID;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 106, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void Init()
+            {
+                byRes = new byte[106];
+            }
+
         }
         /// <summary>
         /// Maximum number of time segments in 9000 DVR's guard schedule
@@ -24643,6 +25373,13 @@ namespace QuickNV.HikvisionNetSDK
             public byte byDoorsStatus;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 4, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes3;
+
+            public void Init()
+            {
+                byCustomInfo = new byte[16];
+                byRes3 = new byte[4];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -24682,6 +25419,13 @@ namespace QuickNV.HikvisionNetSDK
             public NET_DVR_VEHICLE_INFO struVehicleInfo;
             public IntPtr pBuffer1;
             public IntPtr pBuffer2;
+
+            public void Init()
+            {
+                byAbsTime = new byte[32];
+                byRes3 = new byte[6];
+            }
+
         }
 
         /// <summary>
@@ -30034,6 +30778,22 @@ namespace QuickNV.HikvisionNetSDK
             /// 区分共用体，0-视频综合平台内部解码器显示通道配置，1-其他解码器显示通道配置
             /// </summary>
             public byte byUnionType;
+
+            [StructLayoutAttribute(LayoutKind.Explicit)]
+            public struct struDiff
+            {
+                [FieldOffsetAttribute(0)]
+                [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 160, ArraySubType = UnmanagedType.I1)]
+                public byte[] byRes;
+
+                /*[FieldOffsetAttribute(0)]
+                public UNION_VIDEOPLATFORM_V40 struVideoPlatform;
+
+                [FieldOffsetAttribute(0)]
+                public UNION_NOTVIDEOPLATFORM_V40 struNotVideoPlatform;
+                 * */
+            }
+
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 120, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
         }
@@ -30332,6 +31092,19 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValTStr, SizeConst = NAME_LEN)]
             public string szCDName;
+            [StructLayoutAttribute(LayoutKind.Explicit)]
+            public struct uCalcMode
+            {
+                [FieldOffsetAttribute(0)]
+                public byte byBitRate;	// byCalcType为0时有效，(0-32、1-48、2-64、3-80、4-96、5-128、
+                //6-160、7-192、8-224、9-256、10-320、11-384、12-448、
+                //13-512、14-640、15-768、16-896前16个值保留)17-1024、18-1280、19-1536、
+                //20-1792、21-2048、22-3072、23-4096、24-8192
+                [FieldOffsetAttribute(0)]
+                public byte byInquestTime;  // byCalcType为1时有效，0-1小时, 1-2小时,2-3小时,3-4小时, 4-6小时,5-8小时
+                //8-16小时, 9-20小时,10-22小时,11-24小时
+            }
+
             /// <summary>
             /// 刻录计算类型0-按码率 1-按时间
             /// </summary>
@@ -33929,6 +34702,13 @@ namespace QuickNV.HikvisionNetSDK
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = MAX_LAYERNUMS, ArraySubType = UnmanagedType.Struct)]
             public NET_DVR_WINCFG[] struWinCfg;
             public NET_DVR_BIGSCREENCFG struBigScreen;
+
+            public void Init()
+            {
+                struBigScreen = new NET_DVR_BIGSCREENCFG();
+                struWinCfg = new NET_DVR_WINCFG[MAX_LAYERNUMS];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -33965,6 +34745,13 @@ namespace QuickNV.HikvisionNetSDK
             /// 显示通道配置缓冲区, wDispChanNums×sizeof(NET_DVR_SCENEDISPCFG)
             /// </summary>
             public IntPtr pDispChanBuffer;
+            public void Init()
+            {
+                sSceneName = new byte[NAME_LEN];
+                byRes1 = new byte[3];
+                byRes1 = new byte[12];
+            }
+
         }
         /// <summary>
         /// 窗口参数获取
@@ -35668,6 +36455,13 @@ namespace QuickNV.HikvisionNetSDK
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 130, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
             public UNION_EVENT_PARAM uSeniorParam;
+
+            public void Init()
+            {
+                byRes = new byte[130];
+                uSeniorParam.Init();
+            }
+
         }
         public const int SEARCH_EVENT_INFO_LEN_V40 = 800;
 
@@ -35677,6 +36471,11 @@ namespace QuickNV.HikvisionNetSDK
             [FieldOffset(0)]
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = SEARCH_EVENT_INFO_LEN_V40, ArraySubType = UnmanagedType.I1)]
             public byte[] byLen;
+            public void Init()
+            {
+                byLen = new byte[SEARCH_EVENT_INFO_LEN_V40];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -35686,6 +36485,12 @@ namespace QuickNV.HikvisionNetSDK
             public ushort[] wMotDetChanNo;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 672, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void Init()
+            {
+                wMotDetChanNo = new ushort[MAX_CHANNUM_V30];
+                byRes = new byte[672];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -35700,6 +36505,14 @@ namespace QuickNV.HikvisionNetSDK
             public byte[] byArchiveLabel;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 656, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void Init()
+            {
+                byRes1 = new byte[3];
+                byArchiveLabel = new byte[64];
+                byRes = new byte[656];
+                struIDInfo.Init();
+            }
+
         }
 
         /// <summary>
@@ -37427,6 +38240,14 @@ namespace QuickNV.HikvisionNetSDK
             public NET_VCA_POINT struRegionCoordinates;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 48, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void init()
+            {
+                byCardNo = new byte[ACS_CARD_NO_LEN];
+                byMACAddr = new byte[MACADDR_LEN];
+                byEmployeeNo = new byte[NET_SDK_EMPLOYEE_NO_LEN];
+                byRes = new byte[48];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -37498,6 +38319,14 @@ namespace QuickNV.HikvisionNetSDK
             public IntPtr pThermalData;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 36, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void init()
+            {
+                sNetUser = new byte[MAX_NAMELEN];
+                struRemoteHostAddr.Init();
+                struAcsEventInfo.init();
+                byRes = new byte[36];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -37779,6 +38608,12 @@ namespace QuickNV.HikvisionNetSDK
             public uint dwCardNum;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 64, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void Init()
+            {
+                byRes = new byte[64];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -37820,6 +38655,18 @@ namespace QuickNV.HikvisionNetSDK
             public uint dwCardRight;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 256, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void Init()
+            {
+                byCardNo = new byte[ACS_CARD_NO_LEN];
+                byDoorRight = new byte[MAX_DOOR_NUM_256];
+                byBelongGroup = new byte[MAX_GROUP_NUM_128];
+                byCardPassword = new byte[CARD_PASSWORD_LEN];
+                wCardRightPlan = new ushort[MAX_DOOR_NUM_256];
+                byName = new byte[NAME_LEN];
+                byRes = new byte[256];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -37838,6 +38685,13 @@ namespace QuickNV.HikvisionNetSDK
             public byte byStatus;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 23, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void Init()
+            {
+                byCardNo = new byte[ACS_CARD_NO_LEN];
+                byRes = new byte[23];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -37851,6 +38705,13 @@ namespace QuickNV.HikvisionNetSDK
             public byte[] byCardNo;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 16, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void Init()
+            {
+                byCardNo = new byte[ACS_CARD_NO_LEN];
+                byRes = new byte[16];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -37866,6 +38727,15 @@ namespace QuickNV.HikvisionNetSDK
             public NET_DVR_FACE_PARAM_BYCARD struProcessMode;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void Init()
+            {
+                byRes1 = new byte[3];
+                byRes = new byte[64];
+                struProcessMode = new NET_DVR_FACE_PARAM_BYCARD();
+                struProcessMode.Init();
+            }
+
         }
         /// <summary>
         /// max face number
@@ -37883,6 +38753,15 @@ namespace QuickNV.HikvisionNetSDK
             public byte[] byFaceID;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 42, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes1;
+
+            public void Init()
+            {
+                byCardNo = new byte[ACS_CARD_NO_LEN];
+                byEnableCardReader = new byte[MAX_CARD_READER_NUM_512];
+                byFaceID = new byte[MAX_FACE_NUM];
+                byRes1 = new byte[42];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -37895,6 +38774,15 @@ namespace QuickNV.HikvisionNetSDK
             public NET_DVR_FACE_PARAM_BYREADER struProcessMode;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void Init()
+            {
+                byRes1 = new byte[3];
+                byRes = new byte[64];
+                struProcessMode = new NET_DVR_FACE_PARAM_BYREADER();
+                struProcessMode.Init();
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -37908,6 +38796,14 @@ namespace QuickNV.HikvisionNetSDK
             public byte[] byCardNo;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 548, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void Init()
+            {
+                byRes1 = new byte[3];
+                byCardNo = new byte[ACS_CARD_NO_LEN];
+                byRes = new byte[548];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -37931,6 +38827,13 @@ namespace QuickNV.HikvisionNetSDK
             public byte byRecvStatus;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 131, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void init()
+            {
+                byCardNo = new byte[ACS_CARD_NO_LEN];
+                byErrorMsg = new byte[ERROR_MSG_LEN];
+                byRes = new byte[131];
+            }
+
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -37943,6 +38846,13 @@ namespace QuickNV.HikvisionNetSDK
             public IntPtr pFaceBuffer;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 128)]
             public byte[] byRes;
+
+            public void init()
+            {
+                byCardNo = new byte[ACS_CARD_NO_LEN];
+                byRes = new byte[128];
+            }
+
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -37964,6 +38874,12 @@ namespace QuickNV.HikvisionNetSDK
             public int dwEnableReaderNo;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 124)]
             public byte[] byRes;
+            public void init()
+            {
+                byCardNo = new byte[ACS_CARD_NO_LEN];
+                byRes = new byte[124];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -37982,6 +38898,13 @@ namespace QuickNV.HikvisionNetSDK
             public NET_DVR_FACE_PARAM_BYCARD struByCard;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 64, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            public void Init()
+            {
+                byRes1 = new byte[3];
+                byRes = new byte[64];
+                struByCard.Init();
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -37995,6 +38918,13 @@ namespace QuickNV.HikvisionNetSDK
             public byte byFingerPrintID;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 131)]
             public byte[] byRes;
+
+            public void init()
+            {
+                byCardNo = new byte[ACS_CARD_NO_LEN];
+                byRes = new byte[131];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -38325,6 +39255,16 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 140, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+
+            public void Init()
+            {
+                byCardNo = new byte[ACS_CARD_NO_LEN];
+                byName = new byte[NAME_LEN];
+                byRes2 = new byte[2];
+                byEmployeeNo = new byte[NET_SDK_EMPLOYEE_NO_LEN];
+                byRes = new byte[140];
+            }
+
         }
 
         [StructLayoutAttribute(LayoutKind.Sequential)]
@@ -38683,6 +39623,19 @@ namespace QuickNV.HikvisionNetSDK
             /// </summary>
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 3, ArraySubType = UnmanagedType.I1)]
             public byte[] byRes;
+            [StructLayoutAttribute(LayoutKind.Explicit)]
+            public struct uModeParam
+            {
+                [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 4, ArraySubType = UnmanagedType.U4)]
+                [FieldOffsetAttribute(0)]
+                public uint[] dwULen;
+                /*[FieldOffsetAttribute(0)]
+                public NET_DVR_LF_MANUAL_CTRL_INFO struManualCtrl;//手动结构
+                [FieldOffsetAttribute(0)]
+                public NET_DVR_LF_TRACK_TARGET_INFO struTargetTrack;//目标结构
+                 * */
+            }
+
         }
 
         /// <summary>
