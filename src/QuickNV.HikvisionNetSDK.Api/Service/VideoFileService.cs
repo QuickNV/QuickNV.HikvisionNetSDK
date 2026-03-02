@@ -7,6 +7,9 @@ using static QuickNV.HikvisionNetSDK.Methods;
 
 namespace QuickNV.HikvisionNetSDK.Api.Service
 {
+    /// <summary>
+    /// 视频文件服务
+    /// </summary>
     public class VideoFileService
     {
         private HvSession session;

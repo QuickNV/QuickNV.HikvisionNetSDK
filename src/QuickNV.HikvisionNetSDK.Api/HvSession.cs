@@ -1,6 +1,5 @@
 ﻿using QuickNV.HikvisionNetSDK.Api.Service;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using static QuickNV.HikvisionNetSDK.Defines;
 using static QuickNV.HikvisionNetSDK.Methods;
@@ -26,16 +25,18 @@ namespace QuickNV.HikvisionNetSDK.Api
         {
             Invoke(NET_DVR_Init());
         }
-        
+
         public static HvSession Login(string host, int port, string username, string password, Encoding encoding)
         {
             NET_DVR_DEVICEINFO_V30 deviceInfo = default;
             var userId = Invoke(NET_DVR_Login_V30(host, port, username, password, ref deviceInfo));
-            var session = new HvSession(userId, encoding, deviceInfo);
-            session.Host = host;
-            session.Port = port;
-            session.UserName = username;
-            session.Password = password;
+            var session = new HvSession(userId, encoding, deviceInfo)
+            {
+                Host = host,
+                Port = port,
+                UserName = username,
+                Password = password
+            };
             return session;
         }
         public static HvSession Login(string host, int port, string username, string password)
@@ -114,6 +115,34 @@ namespace QuickNV.HikvisionNetSDK.Api
                 if (_VideoFileService == null)
                     _VideoFileService = new VideoFileService(this);
                 return _VideoFileService;
+            }
+        }
+
+        private SetupAlarmService _SetupAlarmService;
+        /// <summary>
+        /// 报警布防服务
+        /// </summary>
+        public SetupAlarmService SetupAlarmService
+        {
+            get
+            {
+                if (_SetupAlarmService == null)
+                    _SetupAlarmService = new SetupAlarmService(this);
+                return _SetupAlarmService;
+            }
+        }
+
+        private static ListenAlarmService _ListenAlarmService;
+        /// <summary>
+        /// 报警监听服务
+        /// </summary>
+        public static ListenAlarmService ListenAlarmService
+        {
+            get
+            {
+                if (_ListenAlarmService == null)
+                    _ListenAlarmService = new ListenAlarmService();
+                return _ListenAlarmService;
             }
         }
     }
