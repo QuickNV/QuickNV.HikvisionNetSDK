@@ -26,6 +26,26 @@ namespace QuickNV.HikvisionNetSDK.Api
             Invoke(NET_DVR_Init());
         }
 
+        /// <summary>
+        /// 设置报警布防的消息回调。多台设备对接时也只需要调用一次设置一个回调函数，不支持不同设备的事件在不同的回调函数里面返回
+        /// </summary>
+        /// <param name="cbMessageCallback">回调函数</param>
+        /// <param name="iIndex">回调函数索引，取值范围：[0,15]</param>
+        public static void SetMessageCallBack(MSGCallBack cbMessageCallback, int iIndex = 0)
+        {
+            //设置回调消息
+            Invoke(NET_DVR_SetDVRMessageCallBack_V50(iIndex, cbMessageCallback, IntPtr.Zero));
+        }
+
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="host"></param>
+        /// <param name="port"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
         public static HvSession Login(string host, int port, string username, string password, Encoding encoding)
         {
             NET_DVR_DEVICEINFO_V30 deviceInfo = default;

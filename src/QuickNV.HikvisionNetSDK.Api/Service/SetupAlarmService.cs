@@ -18,17 +18,14 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
         }
 
         /// <summary>
-        /// 布防
+        /// 布防。布防之前请先使用方法[HvSession.SetMessageCallBack]设置报警布防的消息回调
         /// </summary>
         /// <param name="struSetupParam">布防参数</param>
-        /// <param name="cbMessageCallback">报警消息回调</param>
         /// <exception cref="IOException"></exception>
-        public void SetupAlarm(NET_DVR_SETUPALARM_PARAM struSetupParam, MSGCallBack cbMessageCallback)
+        public void SetupAlarm(NET_DVR_SETUPALARM_PARAM struSetupParam)
         {
             if (setupAlarmHandle.HasValue)
                 throw new IOException($"当前已经布防[句柄：{setupAlarmHandle}]，请撤销此布防后再试");
-            //设置回调消息
-            Invoke(NET_DVR_SetDVRMessageCallBack_V50(0, cbMessageCallback, IntPtr.Zero));
             //布防
             setupAlarmHandle = Invoke(NET_DVR_SetupAlarmChan_V41(session.UserId, ref struSetupParam));
         }

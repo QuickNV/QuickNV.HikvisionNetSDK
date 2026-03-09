@@ -23,9 +23,7 @@ namespace QuickNV.HikvisionNetSDK.Api.Service
         public void StartListen(string listenIpAddress, int listenPort, MSGCallBack cbMessageCallback)
         {
             if (listenAlarmHandle.HasValue)
-                throw new IOException($"当前正在监听[句柄：{listenAlarmHandle}]，请停止监听后再试");
-            //设置回调消息
-            Invoke(NET_DVR_SetDVRMessageCallBack_V50(0, cbMessageCallback, IntPtr.Zero));
+                throw new IOException($"当前正在监听[句柄：{listenAlarmHandle}]，请停止监听后再试");            
             //开始监听
             listenAlarmHandle = Invoke(NET_DVR_StartListen_V30(listenIpAddress, (ushort)listenPort, cbMessageCallback, IntPtr.Zero));
         }
